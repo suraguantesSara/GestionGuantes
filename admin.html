@@ -3,46 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administración de Producción</title>
-    <link rel="stylesheet" href="admin.css">
+    <title>Barra Lateral</title>
+ 
 </head>
 <body>
-    <div class="container">
-        <!-- Barra lateral -->
-        <aside class="sidebar">
-            <h2>Gestión de Talleres</h2>
-            <button onclick="mostrarSeccion('taller1')">Taller 1</button>
-            <button onclick="mostrarSeccion('taller2')">Taller 2</button>
-            <button onclick="mostrarSeccion('taller3')">Taller 3</button>
-            <button onclick="mostrarSeccion('taller4')">Taller 4</button>
-            <button onclick="mostrarSeccion('taller5')">Taller 5</button>
-        </aside>
 
-        <!-- Área de contenido -->
-        <main class="content">
-            <div id="taller1" class="section hidden">
-                <h2>Taller 1</h2>
-                <p>Registro de producción en Taller 1...</p>
-            </div>
-            <div id="taller2" class="section hidden">
-                <h2>Taller 2</h2>
-                <p>Registro de producción en Taller 2...</p>
-            </div>
-            <div id="taller3" class="section hidden">
-                <h2>Taller 3</h2>
-                <p>Registro de producción en Taller 3...</p>
-            </div>
-            <div id="taller4" class="section hidden">
-                <h2>Taller 4</h2>
-                <p>Registro de producción en Taller 4...</p>
-            </div>
-            <div id="taller5" class="section hidden">
-                <h2>Taller 5</h2>
-                <p>Registro de producción en Taller 5...</p>
-            </div>
-        </main>
+    <div class="sidebar">
+        <h2>Opciones</h2>
+        <button class="button" onclick="toggleOptions('troquelado')">Troquelado</button>
+        <div class="options" id="troquelado">
+            <button onclick="edit('Troquelado', 'Ingreso')">Editar Ingreso</button>
+            <button onclick="edit('Troquelado', 'Egreso')">Editar Egreso</button>
+        </div>
+
+        <button class="button" onclick="toggleOptions('armado')">Armado</button>
+        <div class="options" id="armado">
+            <button onclick="edit('Armado', 'Ingreso')">Editar Ingreso</button>
+            <button onclick="edit('Armado', 'Egreso')">Editar Egreso</button>
+        </div>
+
+        <button class="button" onclick="toggleOptions('cerrado')">Cerrado</button>
+        <div class="options" id="cerrado">
+            <button onclick="edit('Cerrado', 'Ingreso')">Editar Ingreso</button>
+            <button onclick="edit('Cerrado', 'Egreso')">Editar Egreso</button>
+        </div>
+
+        <button class="button" onclick="toggleOptions('volteado')">Volteado</button>
+        <div class="options" id="volteado">
+            <button onclick="edit('Volteado', 'Ingreso')">Editar Ingreso</button>
+            <button onclick="edit('Volteado', 'Egreso')">Editar Egreso</button>
+        </div>
+
+        <button class="button">Stock (Automático)</button>
     </div>
 
-    <script src="admin.js"></script>
+
 </body>
 </html>
