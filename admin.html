@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración de Producción</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Barra lateral -->
+        <aside class="sidebar">
+            <h2>Gestión de Talleres</h2>
+            <button onclick="mostrarSeccion('taller1')">Taller 1</button>
+            <button onclick="mostrarSeccion('taller2')">Taller 2</button>
+            <button onclick="mostrarSeccion('taller3')">Taller 3</button>
+            <button onclick="mostrarSeccion('taller4')">Taller 4</button>
+            <button onclick="mostrarSeccion('taller5')">Taller 5</button>
+        </aside>
+
+        <!-- Área de contenido -->
+        <main class="content">
+            <div id="taller1" class="section hidden">
+                <h2>Taller 1</h2>
+                <p>Registro de producción en Taller 1...</p>
+            </div>
+            <div id="taller2" class="section hidden">
+                <h2>Taller 2</h2>
+                <p>Registro de producción en Taller 2...</p>
+            </div>
+            <div id="taller3" class="section hidden">
+                <h2>Taller 3</h2>
+                <p>Registro de producción en Taller 3...</p>
+            </div>
+            <div id="taller4" class="section hidden">
+                <h2>Taller 4</h2>
+                <p>Registro de producción en Taller 4...</p>
+            </div>
+            <div id="taller5" class="section hidden">
+                <h2>Taller 5</h2>
+                <p>Registro de producción en Taller 5...</p>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
