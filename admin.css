@@ -1,0 +1,37 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    height: 100vh;
+}
+
+.sidebar button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    background: #444;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.sidebar button:hover {
+    background: #555;
+}
+
+.content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.hidden {
+    display: none;
+}
