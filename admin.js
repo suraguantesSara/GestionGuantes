@@ -52,3 +52,6 @@ function enviarProducto() {
 
     alert("Producto enviado a " + tallerDestino);
 }
+function volverAtras() {
+    window.history.back();
+}
