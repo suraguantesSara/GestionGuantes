@@ -2,6 +2,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     display: flex;
+    background-color: #f4f4f4;
 }
 
 .container {
@@ -34,18 +35,46 @@ body {
     background: #555;
 }
 
-/* Ajuste para que los talleres aparezcan a la derecha */
 .content-wrapper {
     display: flex;
-    margin-left: 270px; /* Espacio para la barra lateral */
-    width: calc(100% - 270px);
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 40px;
 }
 
-.talleres-panel {
-    width: 300px;
-    background: #f9f9f9;
+.panel {
+    background: white;
     padding: 20px;
-    border-right: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-main, .btn-primary {
+    padding: 12px 20px;
+    margin: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-main {
+    background: #007BFF;
+    color: white;
+}
+
+.btn-main:hover {
+    background: #0056b3;
+}
+
+.btn-primary {
+    background: #28A745;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #218838;
 }
 
 .resumen table {
@@ -60,17 +89,4 @@ body {
 
 .hidden {
     display: none;
-}
-
-button {
-    padding: 10px;
-    margin: 10px 0;
-    background: #007BFF;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-button:hover {
-    background: #0056b3;
 }
