@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    background-color: #f4f4f4;
+    color: #ddd; /* Texto en gris claro */
 }
 
 .container {
@@ -12,7 +12,7 @@ body {
 /* Encabezado */
 header {
     width: 100%;
-    background-color: #007BFF;
+    background-color: #222;
     color: white;
     padding: 15px;
     display: flex;
@@ -25,28 +25,27 @@ header {
     margin: 0;
 }
 
-/* Botón atrás */
+/* Botón atrás ajustado más a la izquierda */
 .btn-back {
     background: transparent;
     color: white;
     border: none;
     font-size: 18px;
     cursor: pointer;
+    margin-left: 10px; /* Ajuste para moverlo a la izquierda */
 }
 
 .btn-back:hover {
     text-decoration: underline;
 }
 
-/* Barra lateral */
+/* Barra lateral ahora debajo del encabezado */
 .sidebar {
     width: 250px;
     background-color: #333;
     color: white;
     padding: 20px;
-    height: 100vh;
-    position: fixed;
-    left: 0;
+    height: auto; /* Ya no ocupa toda la pantalla */
 }
 
 .sidebar button {
@@ -74,10 +73,10 @@ header {
 
 /* Panel */
 .panel {
-    background: white;
+    background: #222;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
     width: 80%;
 }
 
@@ -98,21 +97,21 @@ header {
 }
 
 .btn-main {
-    background: #007BFF;
+    background: #444;
     color: white;
 }
 
 .btn-main:hover {
-    background: #0056b3;
+    background: #666;
 }
 
 .btn-primary {
-    background: #28A745;
+    background: #555;
     color: white;
 }
 
 .btn-primary:hover {
-    background: #218838;
+    background: #777;
 }
 
 /* Tabla de productos registrados */
@@ -123,19 +122,20 @@ header {
 .resumen table {
     width: 100%;
     border-collapse: collapse;
-    background: white;
+    background: #222;
     border-radius: 10px;
     overflow: hidden;
+    color: white;
 }
 
 .resumen th, .resumen td {
-    border: 1px solid #ddd;
+    border: 1px solid #444;
     padding: 10px;
     text-align: center;
 }
 
 .resumen th {
-    background: #007BFF;
+    background: #333;
     color: white;
 }
 
@@ -143,13 +143,9 @@ header {
 .form-container {
     margin-top: 20px;
     padding: 20px;
-    background: white;
+    background: #333;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.hidden {
-    display: none;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
 /* Estilos de los select y input */
@@ -159,5 +155,7 @@ select, input {
     padding: 10px;
     margin: 10px 0;
     border-radius: 5px;
-    border: 1px solid #ddd;
+    border: 1px solid #555;
+    background: #222;
+    color: white;
 }
