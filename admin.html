@@ -19,13 +19,15 @@
 
         <!-- Área de contenido -->
         <div class="content-wrapper">
-            <div class="talleres-panel">
+            <div class="panel">
                 <h2 id="tituloTaller"></h2>
                 <div id="listaTalleres"></div>
 
                 <!-- Botones principales -->
-                <button onclick="mostrarFormulario('registrar')">Registrar</button>
-                <button onclick="mostrarFormulario('enviar')">Enviar</button>
+                <div class="botones-container">
+                    <button class="btn-main" onclick="mostrarFormulario('registrar')">Registrar</button>
+                    <button class="btn-main" onclick="mostrarFormulario('enviar')">Enviar</button>
+                </div>
 
                 <!-- Listado de productos registrados -->
                 <div class="resumen">
@@ -44,16 +46,27 @@
                 </div>
 
                 <!-- Formulario de Registro -->
-                <div id="formularioRegistrar" class="hidden">
+                <div id="formularioRegistrar" class="hidden form-container">
                     <h3>Registrar Nuevo</h3>
-                    <input type="text" id="referencia" placeholder="Referencia">
+                    <select id="referencia">
+                        <option value="Referencia 1">Referencia 1</option>
+                        <option value="Referencia 2">Referencia 2</option>
+                        <option value="Referencia 3">Referencia 3</option>
+                        <option value="Referencia 4">Referencia 4</option>
+                        <option value="Referencia 5">Referencia 5</option>
+                        <option value="Referencia 6">Referencia 6</option>
+                        <option value="Referencia 7">Referencia 7</option>
+                        <option value="Referencia 8">Referencia 8</option>
+                        <option value="Referencia 9">Referencia 9</option>
+                        <option value="Referencia 10">Referencia 10</option>
+                    </select>
                     <input type="number" id="cantidad" placeholder="Cantidad">
                     <input type="text" id="responsable" placeholder="Responsable">
-                    <button onclick="registrarProducto()">Registrar</button>
+                    <button class="btn-primary" onclick="registrarProducto()">Registrar</button>
                 </div>
 
                 <!-- Formulario de Envío -->
-                <div id="formularioEnviar" class="hidden">
+                <div id="formularioEnviar" class="hidden form-container">
                     <h3>Enviar a Taller</h3>
                     <select id="tallerDestino">
                         <option value="Taller 1">Taller 1</option>
@@ -63,9 +76,20 @@
                         <option value="Taller 5">Taller 5</option>
                         <option value="Taller 6">Taller 6</option>
                     </select>
-                    <input type="text" id="referenciaEnviar" placeholder="Referencia">
+                    <select id="referenciaEnviar">
+                        <option value="Referencia 1">Referencia 1</option>
+                        <option value="Referencia 2">Referencia 2</option>
+                        <option value="Referencia 3">Referencia 3</option>
+                        <option value="Referencia 4">Referencia 4</option>
+                        <option value="Referencia 5">Referencia 5</option>
+                        <option value="Referencia 6">Referencia 6</option>
+                        <option value="Referencia 7">Referencia 7</option>
+                        <option value="Referencia 8">Referencia 8</option>
+                        <option value="Referencia 9">Referencia 9</option>
+                        <option value="Referencia 10">Referencia 10</option>
+                    </select>
                     <input type="number" id="cantidadEnviar" placeholder="Cantidad">
-                    <button onclick="enviarProducto()">Enviar</button>
+                    <button class="btn-primary" onclick="enviarProducto()">Enviar</button>
                 </div>
             </div>
         </div>
