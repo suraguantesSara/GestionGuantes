@@ -11,39 +11,64 @@
         <!-- Barra lateral -->
         <aside class="sidebar">
             <h2>Gestión de Talleres</h2>
-            <button onclick="mostrarSeccion('troquelado')">Troquelado</button>
-            <button onclick="mostrarSeccion('armado')">Armado</button>
-            <button onclick="mostrarSeccion('cerrado')">Cerrado</button>
-            <button onclick="mostrarSeccion('volteado')">Volteado</button>
+            <button onclick="mostrarTalleres('troquelado', 1, 6)">Troquelado</button>
+            <button onclick="mostrarTalleres('armado', 7, 12)">Armado</button>
+            <button onclick="mostrarTalleres('cerrado', 13, 18)">Cerrado</button>
+            <button onclick="mostrarTalleres('volteado', 19, 24)">Volteado</button>
         </aside>
 
         <!-- Área de contenido -->
-        <main class="content">
-            <div id="troquelado" class="section hidden">
-                <h2>Troquelado</h2>
-                <div class="resumen" id="resumenTroquelado"></div>
-                <h3>Registrar Nuevo</h3>
-                <input type="text" id="referenciaTroquelado" placeholder="Referencia">
-                <input type="number" id="cantidadTroquelado" placeholder="Cantidad">
-                <input type="text" id="responsableTroquelado" placeholder="Responsable">
-                <button onclick="registrarTroquelado()">Registrar</button>
-                <h3>Enviar a Taller</h3>
-                <select id="tallerTroquelado">
-                    <option value="Taller 1">Taller 1</option>
-                    <option value="Taller 2">Taller 2</option>
-                    <option value="Taller 3">Taller 3</option>
-                    <option value="Taller 4">Taller 4</option>
-                    <option value="Taller 5">Taller 5</option>
-                    <option value="Taller 6">Taller 6</option>
-                    <option value="Taller 7">Taller 7</option>
-                    <option value="Taller 8">Taller 8</option>
-                    <option value="Taller 9">Taller 9</option>
-                    <option value="Taller 10">Taller 10</option>
-                </select>
-                <button onclick="enviarATaller()">Enviar</button>
+        <div class="content-wrapper">
+            <div class="talleres-panel">
+                <h2 id="tituloTaller"></h2>
+                <div id="listaTalleres"></div>
+
+                <!-- Botones principales -->
+                <button onclick="mostrarFormulario('registrar')">Registrar</button>
+                <button onclick="mostrarFormulario('enviar')">Enviar</button>
+
+                <!-- Listado de productos registrados -->
+                <div class="resumen">
+                    <h3>Productos Registrados</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Referencia</th>
+                                <th>Taller</th>
+                                <th>Docenas</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaProductos"></tbody>
+                    </table>
+                </div>
+
+                <!-- Formulario de Registro -->
+                <div id="formularioRegistrar" class="hidden">
+                    <h3>Registrar Nuevo</h3>
+                    <input type="text" id="referencia" placeholder="Referencia">
+                    <input type="number" id="cantidad" placeholder="Cantidad">
+                    <input type="text" id="responsable" placeholder="Responsable">
+                    <button onclick="registrarProducto()">Registrar</button>
+                </div>
+
+                <!-- Formulario de Envío -->
+                <div id="formularioEnviar" class="hidden">
+                    <h3>Enviar a Taller</h3>
+                    <select id="tallerDestino">
+                        <option value="Taller 1">Taller 1</option>
+                        <option value="Taller 2">Taller 2</option>
+                        <option value="Taller 3">Taller 3</option>
+                        <option value="Taller 4">Taller 4</option>
+                        <option value="Taller 5">Taller 5</option>
+                        <option value="Taller 6">Taller 6</option>
+                    </select>
+                    <input type="text" id="referenciaEnviar" placeholder="Referencia">
+                    <input type="number" id="cantidadEnviar" placeholder="Cantidad">
+                    <button onclick="enviarProducto()">Enviar</button>
+                </div>
             </div>
-            <!-- Secciones similares para Armado, Cerrado y Volteado -->
-        </main>
+        </div>
     </div>
 
     <script src="admin.js"></script>
