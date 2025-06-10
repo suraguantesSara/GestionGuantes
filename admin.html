@@ -3,17 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Guantes</title>
+    <title>Administración de Producción</title>
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
     <div class="container">
-        <!-- Encabezado -->
-        <header>
-            <button onclick="volverAtras()" class="btn-back">← Atrás</button>
-            <h1>Gestión de Guantes</h1>
-        </header>
-
         <!-- Barra lateral -->
         <aside class="sidebar">
             <h2>Gestión de Talleres</h2>
@@ -26,8 +20,77 @@
         <!-- Área de contenido -->
         <div class="content-wrapper">
             <div class="panel">
-                <h2 id="tituloTaller">Seleccione un proceso</h2>
+                <h2 id="tituloTaller"></h2>
                 <div id="listaTalleres"></div>
+
+                <!-- Botones principales -->
+                <div class="botones-container">
+                    <button class="btn-main" onclick="mostrarFormulario('registrar')">Registrar</button>
+                    <button class="btn-main" onclick="mostrarFormulario('enviar')">Enviar</button>
+                </div>
+
+                <!-- Listado de productos registrados -->
+                <div class="resumen">
+                    <h3>Productos Registrados</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Referencia</th>
+                                <th>Taller</th>
+                                <th>Docenas</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaProductos"></tbody>
+                    </table>
+                </div>
+
+                <!-- Formulario de Registro -->
+                <div id="formularioRegistrar" class="hidden form-container">
+                    <h3>Registrar Nuevo</h3>
+                    <select id="referencia">
+                        <option value="Referencia 1">Referencia 1</option>
+                        <option value="Referencia 2">Referencia 2</option>
+                        <option value="Referencia 3">Referencia 3</option>
+                        <option value="Referencia 4">Referencia 4</option>
+                        <option value="Referencia 5">Referencia 5</option>
+                        <option value="Referencia 6">Referencia 6</option>
+                        <option value="Referencia 7">Referencia 7</option>
+                        <option value="Referencia 8">Referencia 8</option>
+                        <option value="Referencia 9">Referencia 9</option>
+                        <option value="Referencia 10">Referencia 10</option>
+                    </select>
+                    <input type="number" id="cantidad" placeholder="Cantidad">
+                    <input type="text" id="responsable" placeholder="Responsable">
+                    <button class="btn-primary" onclick="registrarProducto()">Registrar</button>
+                </div>
+
+                <!-- Formulario de Envío -->
+                <div id="formularioEnviar" class="hidden form-container">
+                    <h3>Enviar a Taller</h3>
+                    <select id="tallerDestino">
+                        <option value="Taller 1">Taller 1</option>
+                        <option value="Taller 2">Taller 2</option>
+                        <option value="Taller 3">Taller 3</option>
+                        <option value="Taller 4">Taller 4</option>
+                        <option value="Taller 5">Taller 5</option>
+                        <option value="Taller 6">Taller 6</option>
+                    </select>
+                    <select id="referenciaEnviar">
+                        <option value="Referencia 1">Referencia 1</option>
+                        <option value="Referencia 2">Referencia 2</option>
+                        <option value="Referencia 3">Referencia 3</option>
+                        <option value="Referencia 4">Referencia 4</option>
+                        <option value="Referencia 5">Referencia 5</option>
+                        <option value="Referencia 6">Referencia 6</option>
+                        <option value="Referencia 7">Referencia 7</option>
+                        <option value="Referencia 8">Referencia 8</option>
+                        <option value="Referencia 9">Referencia 9</option>
+                        <option value="Referencia 10">Referencia 10</option>
+                    </select>
+                    <input type="number" id="cantidadEnviar" placeholder="Cantidad">
+                    <button class="btn-primary" onclick="enviarProducto()">Enviar</button>
+                </div>
             </div>
         </div>
     </div>
