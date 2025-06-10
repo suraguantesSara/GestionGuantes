@@ -3,42 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barra Lateral</title>
-    <link rel="stylesheet" href="admin.css">
-
- 
+    <title>Administración de Producción</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="container">
+        <!-- Barra lateral -->
+        <aside class="sidebar">
+            <h2>Gestión de Talleres</h2>
+            <button onclick="mostrarSeccion('troquelado')">Troquelado</button>
+            <button onclick="mostrarSeccion('armado')">Armado</button>
+            <button onclick="mostrarSeccion('cerrado')">Cerrado</button>
+            <button onclick="mostrarSeccion('volteado')">Volteado</button>
+        </aside>
 
-    <div class="sidebar">
-        <h2>Opciones</h2>
-        <button class="button" onclick="toggleOptions('troquelado')">Troquelado</button>
-        <div class="options" id="troquelado">
-            <button onclick="edit('Troquelado', 'Ingreso')">Editar Ingreso</button>
-            <button onclick="edit('Troquelado', 'Egreso')">Editar Egreso</button>
-        </div>
-
-        <button class="button" onclick="toggleOptions('armado')">Armado</button>
-        <div class="options" id="armado">
-            <button onclick="edit('Armado', 'Ingreso')">Editar Ingreso</button>
-            <button onclick="edit('Armado', 'Egreso')">Editar Egreso</button>
-        </div>
-
-        <button class="button" onclick="toggleOptions('cerrado')">Cerrado</button>
-        <div class="options" id="cerrado">
-            <button onclick="edit('Cerrado', 'Ingreso')">Editar Ingreso</button>
-            <button onclick="edit('Cerrado', 'Egreso')">Editar Egreso</button>
-        </div>
-
-        <button class="button" onclick="toggleOptions('volteado')">Volteado</button>
-        <div class="options" id="volteado">
-            <button onclick="edit('Volteado', 'Ingreso')">Editar Ingreso</button>
-            <button onclick="edit('Volteado', 'Egreso')">Editar Egreso</button>
-        </div>
-
-        <button class="button">Stock (Automático)</button>
+        <!-- Área de contenido -->
+        <main class="content">
+            <div id="troquelado" class="section hidden">
+                <h2>Troquelado</h2>
+                <div class="resumen" id="resumenTroquelado"></div>
+                <h3>Registrar Nuevo</h3>
+                <input type="text" id="referenciaTroquelado" placeholder="Referencia">
+                <input type="number" id="cantidadTroquelado" placeholder="Cantidad">
+                <input type="text" id="responsableTroquelado" placeholder="Responsable">
+                <button onclick="registrarTroquelado()">Registrar</button>
+                <h3>Enviar a Taller</h3>
+                <select id="tallerTroquelado">
+                    <option value="Taller 1">Taller 1</option>
+                    <option value="Taller 2">Taller 2</option>
+                    <option value="Taller 3">Taller 3</option>
+                    <option value="Taller 4">Taller 4</option>
+                    <option value="Taller 5">Taller 5</option>
+                    <option value="Taller 6">Taller 6</option>
+                    <option value="Taller 7">Taller 7</option>
+                    <option value="Taller 8">Taller 8</option>
+                    <option value="Taller 9">Taller 9</option>
+                    <option value="Taller 10">Taller 10</option>
+                </select>
+                <button onclick="enviarATaller()">Enviar</button>
+            </div>
+            <!-- Secciones similares para Armado, Cerrado y Volteado -->
+        </main>
     </div>
-<script src="admin.js"></script>
 
+    <script src="script.js"></script>
 </body>
 </html>
