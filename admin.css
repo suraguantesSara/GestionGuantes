@@ -1,187 +1,167 @@
-/* Estilos generales */
-body {
-    font-family: Arial, sans-serif;
+/* Fuente y reset básico */
+body, h1, h2, h3, button, input, select, table {
     margin: 0;
-    background-color: #1a1a1a; /* Fondo negro elegante */
-    color: #ddd; /* Texto en gris claro */
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-sizing: border-box;
+}
+
+/* Estilo general */
+body {
+    background-color: #f4f6f9;
+    color: #2c3e50;
+}
+
+.container {
     display: flex;
+    min-height: 100vh;
     flex-direction: column;
 }
 
 /* Encabezado */
 header {
-    width: 100%;
-    background-color: #222;
-    color: white;
-    padding: 15px 30px;
+    background-color: #1f2d3d;
+    color: #fff;
+    padding: 20px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .titulo {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
-    margin: 0;
 }
 
-/* Botón atrás ajustado más a la izquierda */
 .btn-back {
-    background: transparent;
-    color: white;
+    background: none;
     border: none;
-    font-size: 18px;
+    color: #fff;
+    font-size: 16px;
     cursor: pointer;
-    padding: 5px 15px;
-    transition: 0.3s;
+    padding: 10px;
+    transition: color 0.3s;
 }
 
 .btn-back:hover {
-    text-decoration: underline;
-    transform: translateX(-3px);
+    color: #a9c1d9;
 }
 
-/* Barra lateral ahora debajo del encabezado */
+/* Barra lateral */
 .sidebar {
-    width: 250px;
-    background-color: #333;
-    color: white;
+    background-color: #2f3e4e;
     padding: 20px;
-    height: auto; /* Ajuste para que no ocupe toda la pantalla */
-    box-shadow: 2px 0px 8px rgba(0, 0, 0, 0.2);
+    width: 220px;
+    min-height: 100vh;
+    color: white;
+    position: fixed;
+    top: 80px;
 }
 
 .sidebar h2 {
-    text-align: center;
     font-size: 18px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .sidebar button {
     display: block;
     width: 100%;
-    padding: 12px;
-    margin: 8px 0;
-    background: #444;
-    color: white;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #405060;
+    color: #fff;
     border: none;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 16px;
-    border-radius: 5px;
-    transition: 0.3s;
+    text-align: left;
+    transition: background 0.3s;
 }
 
 .sidebar button:hover {
-    background: #555;
-    transform: scale(1.05);
+    background-color: #55677b;
 }
 
-/* Área de contenido */
+/* Contenido principal */
 .content-wrapper {
-    margin: 20px auto;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    width: 80%;
+    margin-left: 240px;
+    padding: 40px 30px;
+    background-color: #f9fafc;
+    flex: 1;
 }
 
-/* Panel */
 .panel {
-    background: #222;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-    width: 100%;
-    max-width: 900px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
 /* Botones principales */
 .botones-container {
+    margin: 20px 0;
     display: flex;
-    justify-content: center;
     gap: 15px;
-    margin-top: 20px;
 }
 
 .btn-main, .btn-primary {
-    padding: 12px 20px;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
+    background-color: #1f78c1;
+    color: white;
     border: none;
-    transition: 0.3s;
+    padding: 10px 18px;
+    font-size: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
 }
 
-.btn-main {
-    background: #444;
-    color: white;
+.btn-main:hover, .btn-primary:hover {
+    background-color: #155d91;
 }
 
-.btn-main:hover {
-    background: #666;
-    transform: scale(1.05);
-}
-
-.btn-primary {
-    background: #555;
-    color: white;
-}
-
-.btn-primary:hover {
-    background: #777;
-    transform: scale(1.05);
-}
-
-/* Tabla de productos registrados */
-.resumen {
-    margin-top: 20px;
-}
-
-.resumen table {
+/* Tablas */
+table {
     width: 100%;
     border-collapse: collapse;
-    background: #222;
-    border-radius: 10px;
-    overflow: hidden;
-    color: white;
-}
-
-.resumen th, .resumen td {
-    border: 1px solid #444;
-    padding: 12px;
-    text-align: center;
+    margin-top: 10px;
     font-size: 14px;
 }
 
-.resumen th {
-    background: #333;
-    color: white;
+th, td {
+    border: 1px solid #e0e0e0;
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #f0f3f7;
+    font-weight: 600;
 }
 
 /* Formularios */
 .form-container {
-    margin-top: 20px;
+    margin-top: 30px;
     padding: 20px;
-    background: #333;
+    background-color: #f7f9fc;
+    border: 1px solid #dce3ec;
     border-radius: 10px;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
 }
 
-/* Estilos de los select y input */
-select, input {
-    display: block;
+.form-container h3 {
+    margin-bottom: 15px;
+}
+
+.form-container input, 
+.form-container select {
     width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 5px;
-    border: 1px solid #555;
-    background: #222;
-    color: white;
-    font-size: 16px;
+    padding: 10px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
 }
 
-/* Ajuste para ocultar formularios */
+/* Otros */
 .hidden {
     display: none;
 }
+
