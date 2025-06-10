@@ -1,10 +1,9 @@
+/* Estilos generales */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
+    background-color: #1a1a1a; /* Fondo negro elegante */
     color: #ddd; /* Texto en gris claro */
-}
-
-.container {
     display: flex;
     flex-direction: column;
 }
@@ -14,14 +13,16 @@ header {
     width: 100%;
     background-color: #222;
     color: white;
-    padding: 15px;
+    padding: 15px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .titulo {
     font-size: 24px;
+    font-weight: bold;
     margin: 0;
 }
 
@@ -32,11 +33,13 @@ header {
     border: none;
     font-size: 18px;
     cursor: pointer;
-    margin-left: 10px; /* Ajuste para moverlo a la izquierda */
+    padding: 5px 15px;
+    transition: 0.3s;
 }
 
 .btn-back:hover {
     text-decoration: underline;
+    transform: translateX(-3px);
 }
 
 /* Barra lateral ahora debajo del encabezado */
@@ -45,46 +48,59 @@ header {
     background-color: #333;
     color: white;
     padding: 20px;
-    height: auto; /* Ya no ocupa toda la pantalla */
+    height: auto; /* Ajuste para que no ocupe toda la pantalla */
+    box-shadow: 2px 0px 8px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar h2 {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 15px;
 }
 
 .sidebar button {
     display: block;
     width: 100%;
-    padding: 10px;
-    margin: 5px 0;
+    padding: 12px;
+    margin: 8px 0;
     background: #444;
     color: white;
     border: none;
     cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: 0.3s;
 }
 
 .sidebar button:hover {
     background: #555;
+    transform: scale(1.05);
 }
 
 /* Área de contenido */
 .content-wrapper {
-    margin-left: 270px;
+    margin: 20px auto;
     padding: 20px;
     display: flex;
     justify-content: center;
+    width: 80%;
 }
 
 /* Panel */
 .panel {
     background: #222;
-    padding: 20px;
+    padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-    width: 80%;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    width: 100%;
+    max-width: 900px;
 }
 
 /* Botones principales */
 .botones-container {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 15px;
     margin-top: 20px;
 }
 
@@ -94,6 +110,7 @@ header {
     font-size: 16px;
     cursor: pointer;
     border: none;
+    transition: 0.3s;
 }
 
 .btn-main {
@@ -103,6 +120,7 @@ header {
 
 .btn-main:hover {
     background: #666;
+    transform: scale(1.05);
 }
 
 .btn-primary {
@@ -112,6 +130,7 @@ header {
 
 .btn-primary:hover {
     background: #777;
+    transform: scale(1.05);
 }
 
 /* Tabla de productos registrados */
@@ -130,8 +149,9 @@ header {
 
 .resumen th, .resumen td {
     border: 1px solid #444;
-    padding: 10px;
+    padding: 12px;
     text-align: center;
+    font-size: 14px;
 }
 
 .resumen th {
@@ -145,17 +165,23 @@ header {
     padding: 20px;
     background: #333;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
 }
 
 /* Estilos de los select y input */
 select, input {
     display: block;
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     margin: 10px 0;
     border-radius: 5px;
     border: 1px solid #555;
     background: #222;
     color: white;
+    font-size: 16px;
+}
+
+/* Ajuste para ocultar formularios */
+.hidden {
+    display: none;
 }
