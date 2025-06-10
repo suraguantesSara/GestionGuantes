@@ -1,15 +1,44 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    display: flex;
     background-color: #f4f4f4;
 }
 
 .container {
     display: flex;
-    width: 100%;
+    flex-direction: column;
 }
 
+/* Encabezado */
+header {
+    width: 100%;
+    background-color: #007BFF;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.titulo {
+    font-size: 24px;
+    margin: 0;
+}
+
+/* Botón atrás */
+.btn-back {
+    background: transparent;
+    color: white;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.btn-back:hover {
+    text-decoration: underline;
+}
+
+/* Barra lateral */
 .sidebar {
     width: 250px;
     background-color: #333;
@@ -35,24 +64,33 @@ body {
     background: #555;
 }
 
+/* Área de contenido */
 .content-wrapper {
+    margin-left: 270px;
+    padding: 20px;
     display: flex;
     justify-content: center;
-    align-items: center;
-    width: 100%;
-    padding: 40px;
 }
 
+/* Panel */
 .panel {
     background: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 80%;
+}
+
+/* Botones principales */
+.botones-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
 }
 
 .btn-main, .btn-primary {
     padding: 12px 20px;
-    margin: 10px;
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
@@ -77,16 +115,49 @@ body {
     background: #218838;
 }
 
+/* Tabla de productos registrados */
+.resumen {
+    margin-top: 20px;
+}
+
 .resumen table {
     width: 100%;
     border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .resumen th, .resumen td {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 10px;
+    text-align: center;
+}
+
+.resumen th {
+    background: #007BFF;
+    color: white;
+}
+
+/* Formularios */
+.form-container {
+    margin-top: 20px;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .hidden {
     display: none;
+}
+
+/* Estilos de los select y input */
+select, input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ddd;
 }
