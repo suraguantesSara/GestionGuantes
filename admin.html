@@ -1,35 +1,33 @@
-<!-- admin.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Control de Producción de Guantes</title>
-  <link rel="stylesheet" href="admin.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seguimiento de Producción</title>
+  <link rel="stylesheet" href="estilos.css" />
 </head>
 <body>
-  <div class="container">
+  <div class="layout">
     <aside class="sidebar">
       <h2>Procesos</h2>
       <ul>
-        <li onclick="cambiarVista('troquelado')">Troquelado</li>
-        <li onclick="cambiarVista('armado')">Armado</li>
-        <li onclick="cambiarVista('cerrado')">Cerrado</li>
-        <li onclick="cambiarVista('volteado')">Volteado</li>
+        <li><button onclick="mostrarFormulario('troquelado')">Troquelado</button></li>
+        <li><button onclick="mostrarFormulario('armado')">Armado</button></li>
+        <li><button onclick="mostrarFormulario('cerrado')">Cerrado</button></li>
+        <li><button onclick="mostrarFormulario('volteado')">Volteado</button></li>
       </ul>
     </aside>
-
-    <main class="main-content">
+    <main class="contenido">
       <header class="header">
-        <h1>Seguimiento de Producción</h1>
-        <button onclick="window.history.back()">⬅ Volver</button>
+        <h1>🧤 Seguimiento de Producción</h1>
+        <button class="volver" onclick="window.history.back()">← Volver</button>
       </header>
-
-      <section id="contenido">
-        <!-- Aquí se imprimen los formularios y listas -->
+      <section id="formulario">
+        <!-- Aquí irá el contenido dinámico -->
       </section>
     </main>
   </div>
 
-  <script src="admin.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
