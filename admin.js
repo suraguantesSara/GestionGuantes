@@ -1,4 +1,4 @@
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzF2fYjCaEhUxXjoCU7YIC0Z2DqHHvo4yGC7c_xzbeTo28gjU78pic2KbFxpgcem_6JvA/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxXrmKfBb69kwW0C_VsNd9oJtbW7fsa5l7bRj_atPOPeM9VaJW4pSG4RKdoS1TDPiNRpA/exec';
 
 // --- Funciones para la Interfaz de Usuario ---
 
