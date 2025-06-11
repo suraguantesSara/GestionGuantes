@@ -1,4 +1,4 @@
-const URL_API = 'https://script.google.com/macros/s/AKfycbzotSSEVVL-q8lBcL-D4LgEZhYIy09yeEdHMFSFtSMN_jvSpm_wU8T2wlP1A0lv4Jr7Qw/exec';
+const URL_API = 'https://script.google.com/macros/s/AKfycbxnkhguh6rBlzYqwkqBPUb4CKEh_87K1uJqLFlorAISR69AGwTrpUZdP4vSVay7nJj6iQ/exec';
 
 function cargarVista(proceso) {
   const contenido = document.getElementById('formulario');
