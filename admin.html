@@ -8,13 +8,11 @@
 </head>
 <body>
     <div class="container">
-        <!-- Encabezado -->
         <header>
             <h1 class="titulo">Gestión de Guantes</h1>
             <button onclick="volverAtras()" class="btn-back">← Atrás</button>
         </header>
 
-        <!-- Barra lateral -->
         <aside class="sidebar">
             <h2>Gestión de Talleres</h2>
             <button onclick="mostrarTalleres('troquelado', 1, 6)">Troquelado</button>
@@ -23,19 +21,15 @@
             <button onclick="mostrarTalleres('volteado', 19, 24)">Volteado</button>
         </aside>
 
-        <!-- Área de contenido -->
         <div class="content-wrapper">
-            <div class="panel">
-                <h2 id="tituloTaller"></h2>
+            <div class="panel"> <h2 id="tituloTaller"></h2>
                 <div id="listaTalleres"></div>
 
-                <!-- Botones principales -->
                 <div class="botones-container">
                     <button class="btn-main" onclick="mostrarFormulario('registrar')">Registrar</button>
                     <button class="btn-main" onclick="mostrarFormulario('enviar')">Enviar</button>
                 </div>
 
-                <!-- Listado de productos registrados -->
                 <div class="resumen">
                     <h3>Productos Registrados</h3>
                     <table>
@@ -51,11 +45,10 @@
                     </table>
                 </div>
 
-                <!-- Formulario de Registro -->
                 <div id="formularioRegistrar" class="hidden form-container">
                     <h3>Registrar Nuevo</h3>
                     <select id="referencia">
-                        <option value="Referencia 1">Referencia 1</option>
+                        <option value="">Selecciona una Referencia</option> <option value="Referencia 1">Referencia 1</option>
                         <option value="Referencia 2">Referencia 2</option>
                         <option value="Referencia 3">Referencia 3</option>
                         <option value="Referencia 4">Referencia 4</option>
@@ -66,24 +59,21 @@
                         <option value="Referencia 9">Referencia 9</option>
                         <option value="Referencia 10">Referencia 10</option>
                     </select>
-                    <input type="number" id="cantidad" placeholder="Cantidad">
+                    <input type="number" id="cantidad" placeholder="Cantidad (Docenas)">
                     <input type="text" id="responsable" placeholder="Responsable">
                     <button class="btn-primary" onclick="registrarProducto()">Registrar</button>
                 </div>
 
-                <!-- Formulario de Envío -->
                 <div id="formularioEnviar" class="hidden form-container">
                     <h3>Enviar a Taller</h3>
                     <select id="tallerDestino">
-                        <option value="Taller 1">Taller 1</option>
-                        <option value="Taller 2">Taller 2</option>
-                        <option value="Taller 3">Taller 3</option>
-                        <option value="Taller 4">Taller 4</option>
-                        <option value="Taller 5">Taller 5</option>
-                        <option value="Taller 6">Taller 6</option>
+                        <option value="">Selecciona Taller Destino</option> <option value="Armado">Armado</option>
+                        <option value="Cerrado">Cerrado</option>
+                        <option value="Volteado">Volteado</option>
+                        <option value="Stock">Stock</option>
                     </select>
                     <select id="referenciaEnviar">
-                        <option value="Referencia 1">Referencia 1</option>
+                        <option value="">Selecciona Referencia a Enviar</option> <option value="Referencia 1">Referencia 1</option>
                         <option value="Referencia 2">Referencia 2</option>
                         <option value="Referencia 3">Referencia 3</option>
                         <option value="Referencia 4">Referencia 4</option>
@@ -94,7 +84,8 @@
                         <option value="Referencia 9">Referencia 9</option>
                         <option value="Referencia 10">Referencia 10</option>
                     </select>
-                    <input type="number" id="cantidadEnviar" placeholder="Cantidad">
+                    <input type="number" id="cantidadEnviar" placeholder="Cantidad a Enviar">
+                    <input type="text" id="responsableEnviar" placeholder="Responsable de Envío"> 
                     <button class="btn-primary" onclick="enviarProducto()">Enviar</button>
                 </div>
             </div>
@@ -104,3 +95,4 @@
     <script src="admin.js"></script>
 </body>
 </html>
+
