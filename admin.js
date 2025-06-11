@@ -1,15 +1,15 @@
-const URL_API = 'https://script.google.com/macros/s/AKfycbw7Ze1Wpo64aqhI1ewU-v29C8XFNZhC5Task7jy0CGMLwz9LArIAWLDWIFRV7ENo0gh_w/exec'; 
+const URL_API = 'https://script.google.com/macros/s/AKfycbw7Ze1Wpo64aqhI1ewU-v29C8XFNZhC5Task7jy0CGMLwz9LArIAWLDWIFRV7ENo0gh_w/exec';
 
 function cargarVista(proceso) {
-  const contenido = document.getElementById('contenido');
+  const contenido = document.getElementById('formulario');
 
   if (proceso === 'troquelado') {
     contenido.innerHTML = `
       <h2>Troquelado</h2>
       <form onsubmit="registrarProducto(event)">
-        <label>Referencia: <input type="text" id="referencia" required></label>
-        <label>Cantidad (docenas): <input type="number" id="cantidad" required></label>
-        <label>Responsable: <input type="text" id="responsable" required></label>
+        <label>Referencia: <input type="text" id="referencia" required></label><br><br>
+        <label>Cantidad (docenas): <input type="number" id="cantidad" required></label><br><br>
+        <label>Responsable: <input type="text" id="responsable" required></label><br><br>
         <button type="submit">Registrar</button>
       </form>
     `;
@@ -17,14 +17,14 @@ function cargarVista(proceso) {
     contenido.innerHTML = `
       <h2>Enviar desde ${capitalizar(proceso)}</h2>
       <form onsubmit="enviarProducto(event, '${proceso}')">
-        <label>Referencia: <input type="text" id="referencia" required></label>
-        <label>Cantidad (docenas): <input type="number" id="cantidad" required></label>
+        <label>Referencia: <input type="text" id="referencia" required></label><br><br>
+        <label>Cantidad (docenas): <input type="number" id="cantidad" required></label><br><br>
         <label>Destino:
           <select id="destino">
             ${generarOpcionesDestino(proceso)}
           </select>
-        </label>
-        <label>Responsable: <input type="text" id="responsable" required></label>
+        </label><br><br>
+        <label>Responsable: <input type="text" id="responsable" required></label><br><br>
         <button type="submit">Enviar</button>
       </form>
     `;
