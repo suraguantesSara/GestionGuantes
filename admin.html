@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Gestión de Procesos</title>
   <style>
     body {
@@ -19,6 +19,9 @@
       color: #fff;
       padding: 15px;
       z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .sidebar {
@@ -89,6 +92,15 @@
     button[type="submit"] {
       margin-top: 10px;
       padding: 10px 20px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #2980b9;
     }
 
     .btn-secundario {
@@ -96,6 +108,10 @@
       border: none;
       padding: 10px;
       cursor: pointer;
+    }
+
+    .btn-secundario:hover {
+      background-color: #aaa;
     }
   </style>
 </head>
@@ -118,32 +134,27 @@
     <h2 id="tituloProceso">Seleccione un proceso</h2>
     <div id="tablaDatos"></div>
 
-    <!-- FORMULARIO DE REGISTRO -->
+    <!-- FORMULARIO DE REGISTRO (solo para troquelado) -->
     <div id="formRegistro" class="formulario">
       <h3>Registrar Producción</h3>
       <form id="formularioRegistro">
         <label>Referencia: <input type="text" name="referencia" required></label>
         <label>Cantidad (docenas): <input type="number" name="cantidad" min="1" required></label>
-        <button type="submit">Registrar</button>
-      </form>
-    </div>
-
-    <!-- FORMULARIO DE ENVÍO -->
-    <div id="formEnvio" class="formulario">
-      <h3>Enviar a otro Taller</h3>
-      <form id="formularioEnvio">
-        <label>Referencia: <input type="text" name="referencia" required></label>
-        <label>Cantidad a enviar (docenas): <input type="number" name="cantidad" min="1" required></label>
-        <label>Taller destino:
-          <select name="destino" required>
-            <option value="">Seleccione destino</option>
-            <option value="armado">Armado</option>
-            <option value="cerrado">Cerrado</option>
-            <option value="volteado">Volteado</option>
-            <option value="stock">Stock Final</option>
+        <label>¿Enviado?
+          <select name="enviado" required>
+            <option value="no">No</option>
+            <option value="sí">Sí</option>
           </select>
         </label>
-        <button type="submit">Enviar</button>
+        <label>Destino (Taller):
+          <select name="destino">
+            <option value="">Selecciona taller</option>
+            <option value="juan perez">Juan Pérez</option>
+            <option value="marta lopez">Marta López</option>
+            <option value="carlos diaz">Carlos Díaz</option>
+          </select>
+        </label>
+        <button type="submit">Registrar</button>
       </form>
     </div>
   </main>
@@ -151,4 +162,5 @@
   <script src="admin.js"></script>
 </body>
 </html>
+
 
