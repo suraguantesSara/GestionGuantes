@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gestión de Producción</title>
+  <meta charset="UTF-8">
+  <title>Gestión de Procesos</title>
   <style>
     body {
       margin: 0;
@@ -12,168 +11,142 @@
     }
 
     header {
-      background-color: #2c3e50;
-      color: white;
-      padding: 10px;
-      text-align: center;
-      width: 100%;
       position: fixed;
       top: 0;
-      z-index: 1000;
+      left: 200px;
+      right: 0;
+      background-color: #333;
+      color: #fff;
+      padding: 15px;
+      z-index: 1;
     }
 
-    .container {
-      display: flex;
-      margin-top: 60px;
-      width: 100%;
-    }
-
-    nav {
+    .sidebar {
       width: 200px;
-      background-color: #ecf0f1;
-      padding: 20px;
-      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      background-color: #f4f4f4;
+      height: 100vh;
+      padding-top: 20px;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      position: fixed;
     }
 
-    nav button {
-      display: block;
+    .sidebar button {
       width: 100%;
-      margin-bottom: 10px;
-      padding: 10px;
+      padding: 15px;
       border: none;
-      background-color: #3498db;
-      color: white;
+      background: none;
+      text-align: left;
+      font-size: 16px;
       cursor: pointer;
-      border-radius: 4px;
     }
 
-    nav button:hover {
-      background-color: #2980b9;
+    .sidebar button:hover {
+      background-color: #ddd;
     }
 
     main {
-      flex: 1;
+      margin-left: 200px;
+      margin-top: 70px;
       padding: 20px;
+      flex: 1;
     }
 
-    .section {
+    h2 {
+      margin-top: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    .formulario {
+      margin-top: 20px;
       display: none;
     }
 
-    .visible {
-      display: block;
-    }
-
-    form label {
+    label {
       display: block;
       margin-bottom: 10px;
     }
 
-    form input, form select {
+    input, select {
+      padding: 6px;
       width: 100%;
-      padding: 8px;
-      margin-top: 4px;
+      max-width: 300px;
     }
 
-    form button {
-      margin-top: 15px;
+    button[type="submit"] {
+      margin-top: 10px;
+      padding: 10px 20px;
+    }
+
+    .btn-secundario {
+      background-color: #ccc;
+      border: none;
       padding: 10px;
-      background-color: #27ae60;
-      color: white;
-      border: none;
-      border-radius: 4px;
       cursor: pointer;
-    }
-
-    form button:hover {
-      background-color: #1e8449;
-    }
-
-    .btn-back {
-      position: absolute;
-      left: 10px;
-      top: 10px;
-      background: #e74c3c;
-      color: white;
-      padding: 6px 12px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    .btn-back:hover {
-      background: #c0392b;
     }
   </style>
 </head>
 <body>
+
+  <div class="sidebar">
+    <button onclick="seleccionarProceso('troquelado')">Troquelado</button>
+    <button onclick="seleccionarProceso('armado')">Armado</button>
+    <button onclick="seleccionarProceso('cerrado')">Cerrado</button>
+    <button onclick="seleccionarProceso('volteado')">Volteado</button>
+    <button onclick="seleccionarProceso('stock')">Stock Final</button>
+  </div>
+
   <header>
-    <button class="btn-back" onclick="history.back()">Atrás</button>
-    <h1>Gestión de Producción de Guantes</h1>
+    <h1>Gestión de Procesos</h1>
+    <button class="btn-secundario" onclick="window.history.back()">← Atrás</button>
   </header>
 
-  <div class="container">
-    <nav>
-      <button data-section="troquelado">Troquelado</button>
-      <button data-section="armado">Armado</button>
-      <button data-section="cerrado">Cerrado</button>
-      <button data-section="volteado">Volteado</button>
-      <button data-section="stock">Stock Final</button>
-    </nav>
+  <main>
+    <h2 id="tituloProceso">Seleccione un proceso</h2>
+    <div id="tablaDatos"></div>
 
-    <main>
-      <section id="troquelado" class="section">
-        <h2>Troquelado</h2>
-        <form id="troqueladoForm">
-          <label>
-            Referencia:
-            <input type="text" name="referencia" required />
-          </label>
-          <label>
-            Cantidad (docenas):
-            <input type="number" name="cantidad" required />
-          </label>
-          <label>
-            ¿Enviado?
-            <select name="enviado" required>
-              <option value="no">No</option>
-              <option value="sí">Sí</option>
-            </select>
-          </label>
-          <label>
-            Destino (Taller):
-            <select name="destino">
-              <option value="">Selecciona taller</option>
-              <option value="juan perez">Juan Pérez</option>
-              <option value="marta lopez">Marta López</option>
-              <option value="carlos diaz">Carlos Díaz</option>
-            </select>
-          </label>
-          <button type="submit">Registrar</button>
-        </form>
-      </section>
+    <!-- FORMULARIO DE REGISTRO -->
+    <div id="formRegistro" class="formulario">
+      <h3>Registrar Producción</h3>
+      <form id="formularioRegistro">
+        <label>Referencia: <input type="text" name="referencia" required></label>
+        <label>Cantidad (docenas): <input type="number" name="cantidad" min="1" required></label>
+        <button type="submit">Registrar</button>
+      </form>
+    </div>
 
-      <section id="armado" class="section">
-        <h2>Armado</h2>
-        <p>Consulta de datos aquí...</p>
-      </section>
-
-      <section id="cerrado" class="section">
-        <h2>Cerrado</h2>
-        <p>Consulta de datos aquí...</p>
-      </section>
-
-      <section id="volteado" class="section">
-        <h2>Volteado</h2>
-        <p>Consulta de datos aquí...</p>
-      </section>
-
-      <section id="stock" class="section">
-        <h2>Stock Final</h2>
-        <p>Consulta de datos aquí...</p>
-      </section>
-    </main>
-  </div>
+    <!-- FORMULARIO DE ENVÍO -->
+    <div id="formEnvio" class="formulario">
+      <h3>Enviar a otro Taller</h3>
+      <form id="formularioEnvio">
+        <label>Referencia: <input type="text" name="referencia" required></label>
+        <label>Cantidad a enviar (docenas): <input type="number" name="cantidad" min="1" required></label>
+        <label>Taller destino:
+          <select name="destino" required>
+            <option value="">Seleccione destino</option>
+            <option value="armado">Armado</option>
+            <option value="cerrado">Cerrado</option>
+            <option value="volteado">Volteado</option>
+            <option value="stock">Stock Final</option>
+          </select>
+        </label>
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
+  </main>
 
   <script src="admin.js"></script>
 </body>
