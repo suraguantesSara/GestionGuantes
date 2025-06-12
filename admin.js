@@ -1,4 +1,4 @@
-const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzcQpXWAXD1ec9GsAe9GZ4z71hc9FCG86_tfvd5rML-nf51bJkJ-VKj33X4b90gmHY4/exec";
+const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzVo3xVYvh4HcAIQ6e1VzoDMqC1-7rXV2-V04D4eHHFRxnKj0fKfH6DWxRvDO4blhdg/exec";
 
 function mostrarFormulario(proceso) {
   document.getElementById("tituloFormulario").innerText = `Formulario: ${proceso}`;
