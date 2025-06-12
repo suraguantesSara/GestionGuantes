@@ -1,182 +1,48 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Gestión de Procesos</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      display: flex;
-    }
-
-    header {
-      position: fixed;
-      top: 0;
-      left: 200px;
-      right: 0;
-      background-color: #333;
-      color: #fff;
-      padding: 15px;
-      z-index: 1;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .sidebar {
-      width: 200px;
-      background-color: #f4f4f4;
-      height: 100vh;
-      padding-top: 20px;
-      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-      position: fixed;
-    }
-
-    .sidebar button {
-      width: 100%;
-      padding: 15px;
-      border: none;
-      background: none;
-      text-align: left;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .sidebar button:hover {
-      background-color: #ddd;
-    }
-
-    main {
-      margin-left: 200px;
-      margin-top: 70px;
-      padding: 20px;
-      flex: 1;
-    }
-
-    h2 {
-      margin-top: 0;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-
-    table, th, td {
-      border: 1px solid #ccc;
-    }
-
-    th, td {
-      padding: 10px;
-      text-align: left;
-    }
-
-    .formulario {
-      margin-top: 20px;
-      display: none;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 10px;
-    }
-
-    input, select {
-      padding: 6px;
-      width: 100%;
-      max-width: 300px;
-    }
-
-    button[type="submit"] {
-      margin-top: 10px;
-      padding: 10px 20px;
-      background-color: #3498db;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    button[type="submit"]:hover {
-      background-color: #2980b9;
-    }
-
-    .btn-secundario {
-      background-color: #ccc;
-      border: none;
-      padding: 10px;
-      cursor: pointer;
-    }
-
-    .btn-secundario:hover {
-      background-color: #aaa;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Producción</title>
+  <link rel "style.sheet" href"admin.css"/>
+    <script src="admin.js"></script>
 </head>
 <body>
+    <h1>Control de Producción</h1>
+    
+    <label for="proceso">Seleccionar Proceso:</label>
+    <select id="proceso">
+        <option value="troquelado">Troquelado</option>
+        <option value="armado">Armado</option>
+        <option value="cerrado">Cerrado</option>
+    </select>
 
-  <div class="sidebar">
-    <button onclick="seleccionarProceso('troquelado')">Troquelado</button>
-    <button onclick="seleccionarProceso('armado')">Armado</button>
-    <button onclick="seleccionarProceso('cerrado')">Cerrado</button>
-    <button onclick="seleccionarProceso('volteado')">Volteado</button>
-    <button onclick="seleccionarProceso('stock')">Stock Final</button>
-  </div>
+    <h2>Registrar Producción</h2>
+    <input type="text" id="referencia" placeholder="Referencia">
+    <input type="number" id="cantidad" placeholder="Cantidad">
+    <button onclick="registrarProduccion()">Registrar</button>
 
-  <header>
-    <h1>Gestión de Procesos</h1>
-    <button class="btn-secundario" onclick="window.history.back()">← Atrás</button>
-  </header>
+    <h2>Enviar Productos</h2>
+    <input type="text" id="referenciaEnvio" placeholder="Referencia">
+    <input type="number" id="cantidadEnvio" placeholder="Cantidad">
+    <select id="destino">
+        <option value="armado">Armado</option>
+        <option value="cerrado">Cerrado</option>
+        <option value="volteado">Volteado</option>
+        <option value="stock_final">Stock Final</option>
+    </select>
+    <button onclick="enviarProduccion()">Enviar</button>
 
-  <main>
-    <h2 id="tituloProceso">Seleccione un proceso</h2>
-    <div id="tablaDatos"></div>
-
-    <!-- FORMULARIO DE REGISTRO -->
-    <div id="formRegistro" class="formulario">
-      <h3>Registrar Producción</h3>
-      <form id="formularioRegistro">
-        <label>Referencia: <input type="text" name="referencia" required></label>
-        <label>Cantidad (docenas): <input type="number" name="cantidad" min="1" required></label>
-        <label>¿Enviado?
-          <select name="enviado" required>
-            <option value="no">No</option>
-            <option value="sí">Sí</option>
-          </select>
-        </label>
-        <label>Destino (Taller):
-          <select name="destino">
-            <option value="">Selecciona taller</option>
-            <option value="juan perez">Juan Pérez</option>
-            <option value="marta lopez">Marta López</option>
-            <option value="carlos diaz">Carlos Díaz</option>
-          </select>
-        </label>
-        <button type="submit">Registrar</button>
-      </form>
-    </div>
-
-    <!-- FORMULARIO DE ENVÍO -->
-    <div id="formEnvio" class="formulario">
-      <h3>Enviar Producción</h3>
-      <form id="formularioEnvio">
-        <label>Referencia: <input type="text" name="referencia" required></label>
-        <label>Cantidad (docenas): <input type="number" name="cantidad" min="1" required></label>
-        <label>Destino (Taller):
-          <select name="destino" required>
-            <option value="">Selecciona taller</option>
-            <option value="juan perez">Juan Pérez</option>
-            <option value="marta lopez">Marta López</option>
-            <option value="carlos diaz">Carlos Díaz</option>
-          </select>
-        </label>
-        <button type="submit">Enviar</button>
-      </form>
-    </div>
-  </main>
-
-  <script src="admin.js"></script>
+    <h2>Registros</h2>
+    <table id="tablaRegistros">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Referencia</th>
+                <th>Cantidad</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
 </body>
 </html>
