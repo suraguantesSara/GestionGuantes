@@ -1,82 +1,87 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const titulo = document.getElementById("tituloProceso");
-  const tabla = document.getElementById("tablaDatos");
-  const formRegistro = document.getElementById("formRegistro");
-  const formEnvio = document.getElementById("formEnvio");
-  const formularioRegistro = document.getElementById("formularioRegistro");
-  const formularioEnvio = document.getElementById("formularioEnvio");
+  // Botones y formularios
+  const btnTroquelado = document.getElementById("btn-troquelado");
+  const btnArmado = document.getElementById("btn-armado");
+  const btnCerrado = document.getElementById("btn-cerrado");
+  const btnVolteado = document.getElementById("btn-volteado");
+  const btnStock = document.getElementById("btn-stock");
 
-  let procesoActual = "";
+  const seccionTroquelado = document.getElementById("seccion-troquelado");
+  const seccionArmado = document.getElementById("seccion-armado");
+  const seccionCerrado = document.getElementById("seccion-cerrado");
+  const seccionVolteado = document.getElementById("seccion-volteado");
+  const seccionStock = document.getElementById("seccion-stock");
 
-  window.seleccionarProceso = function (proceso) {
-    procesoActual = proceso;
-    titulo.textContent = `Proceso: ${proceso.charAt(0).toUpperCase() + proceso.slice(1)}`;
-    formRegistro.style.display = "block";
-    formEnvio.style.display = "block";
-    tabla.innerHTML = "<p>Cargando datos...</p>";
+  const formularioTroquelado = document.getElementById("form-troquelado");
+  const btnEnviarTroquelado = document.getElementById("btn-enviar-troquelado");
 
-    fetch(`https://script.google.com/macros/s/AKfycby2UsuCuIa2TKpJ9xmZuSRi4Bd5w747ScS8bsUy_bMt70U2aNoGWVDhVQsoWG-gOf7j/exec?proceso=${proceso}`)
-      .then(res => res.json())
-      .then(data => {
-        if (!Array.isArray(data) || data.length === 0) {
-          tabla.innerHTML = "<p>No hay datos registrados.</p>";
-          return;
-        }
+  // Mostrar secciones al hacer clic
+  function ocultarSecciones() {
+    seccionTroquelado.style.display = "none";
+    seccionArmado.style.display = "none";
+    seccionCerrado.style.display = "none";
+    seccionVolteado.style.display = "none";
+    seccionStock.style.display = "none";
+  }
 
-        const headers = Object.keys(data[0]);
-        const rows = data.map(d => `<tr>${headers.map(h => `<td>${d[h]}</td>`).join("")}</tr>`).join("");
-        tabla.innerHTML = `
-          <table>
-            <thead><tr>${headers.map(h => `<th>${h}</th>`).join("")}</tr></thead>
-            <tbody>${rows}</tbody>
-          </table>`;
-      })
-      .catch(err => {
-        tabla.innerHTML = `<p>Error al cargar datos: ${err.message}</p>`;
-      });
-  };
-
-  formularioRegistro.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const formData = new FormData(formularioRegistro);
-    formData.append("proceso", procesoActual);
-    formData.append("tipo", "registro");
-
-    fetch("https://script.google.com/macros/s/AKfycby2UsuCuIa2TKpJ9xmZuSRi4Bd5w747ScS8bsUy_bMt70U2aNoGWVDhVQsoWG-gOf7j/exec", {
-      method: "POST",
-      body: formData
-    })
-      .then(res => res.text())
-      .then(response => {
-        alert("Registro exitoso");
-        formularioRegistro.reset();
-        seleccionarProceso(procesoActual);
-      })
-      .catch(error => {
-        alert("Error al registrar: " + error.message);
-      });
+  btnTroquelado?.addEventListener("click", () => {
+    ocultarSecciones();
+    seccionTroquelado.style.display = "block";
   });
 
-  formularioEnvio.addEventListener("submit", (e) => {
+  btnArmado?.addEventListener("click", () => {
+    ocultarSecciones();
+    seccionArmado.style.display = "block";
+  });
+
+  btnCerrado?.addEventListener("click", () => {
+    ocultarSecciones();
+    seccionCerrado.style.display = "block";
+  });
+
+  btnVolteado?.addEventListener("click", () => {
+    ocultarSecciones();
+    seccionVolteado.style.display = "block";
+  });
+
+  btnStock?.addEventListener("click", () => {
+    ocultarSecciones();
+    seccionStock.style.display = "block";
+  });
+
+  // Función para registrar troquelado
+  formularioTroquelado?.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const formData = new FormData(formularioEnvio);
-    formData.append("proceso", procesoActual);
-    formData.append("tipo", "envio");
+    const referencia = document.getElementById("referencia").value;
+    const cantidad = document.getElementById("cantidad").value;
+    const fecha = new Date().toLocaleDateString("es-ES");
 
-    fetch("https://script.google.com/macros/s/AKfycby2UsuCuIa2TKpJ9xmZuSRi4Bd5w747ScS8bsUy_bMt70U2aNoGWVDhVQsoWG-gOf7j/exec", {
-      method: "POST",
-      body: formData
-    })
-      .then(res => res.text())
-      .then(response => {
-        alert("Envío registrado exitosamente");
-        formularioEnvio.reset();
-        seleccionarProceso(procesoActual);
-      })
-      .catch(error => {
-        alert("Error al registrar envío: " + error.message);
-      });
+    try {
+      const response = await fetch(
+        "https://script.google.com/macros/s/AKfycby2UsuCuIa2TKpJ9xmZuSRi4Bd5w747ScS8bsUy_bMt70U2aNoGWVDhVQsoWG-gOf7j/exec",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            proceso: "troquelado",
+            referencia,
+            cantidad,
+            fecha,
+            enviado: "No",
+            destino: "",
+          }),
+        }
+      );
+
+      const data = await response.json();
+      alert("✅ Registrado correctamente");
+      formularioTroquelado.reset();
+    } catch (error) {
+      console.error("Error al registrar:", error);
+      alert("❌ Error al registrar. Verifica tu conexión o intenta más tarde.");
+    }
   });
 });
