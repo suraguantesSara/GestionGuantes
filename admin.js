@@ -1,64 +1,98 @@
-const URL_API = 'https://script.google.com/macros/s/AKfycbwo_8Zyqto3trzTm55O_o0KgpwFB8bBYdT0A7Xs5GqkldVH9647maPrlDhzOWRgcB40/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbzpBS6TkLYNXZ2f65HztyKSgMowP3jHwDoJcahiP0a2TFQ7IOfLpJSHDxKV7oo21chS/exec';
 
-function cargarVista() {
-  const contenido = document.getElementById('formulario');
+let procesoActual = '';
 
-  contenido.innerHTML = `
-    <h2>Registrar Producción</h2>
-    <form onsubmit="registrarProducto(event)">
-      <label>Referencia: <input type="text" id="referencia" required></label><br><br>
-      <label>Doc. Ingresadas: <input type="number" id="ingresadas" min="0" required></label><br><br>
-      <label>Doc. Procesadas: <input type="number" id="procesadas" min="0" required></label><br><br>
-      <label>Doc. Pendientes: <input type="number" id="pendientes" min="0" required></label><br><br>
-      <label>Taller:
-        <select id="taller" required>
-          <option value="">Selecciona un taller</option>
-          <option value="troquelado">Troquelado</option>
-          <option value="armado">Armado</option>
-          <option value="cerrado">Cerrado</option>
-          <option value="volteado">Volteado</option>
-        </select>
-      </label><br><br>
-      <button type="submit">Registrar</button>
-    </form>
-  `;
+function seleccionarProceso(proceso) {
+  procesoActual = proceso;
+  document.getElementById('tituloProceso').textContent = `Proceso: ${proceso.charAt(0).toUpperCase() + proceso.slice(1)}`;
+  document.getElementById('formRegistro').style.display = 'block';
+  document.getElementById('formEnvio').style.display = 'block';
+  cargarDatos(proceso);
 }
 
-function registrarProducto(event) {
-  event.preventDefault();
+async function cargarDatos(proceso) {
+  try {
+    const res = await fetch(`${scriptURL}?proceso=${proceso}&accion=consultar`);
+    const data = await res.json();
+    mostrarTabla(data);
+  } catch (error) {
+    document.getElementById('tablaDatos').innerHTML = '<p>Error al cargar los datos.</p>';
+    console.error(error);
+  }
+}
 
-  const referencia = document.getElementById('referencia').value.trim();
-  const ingresadas = document.getElementById('ingresadas').value;
-  const procesadas = document.getElementById('procesadas').value;
-  const pendientes = document.getElementById('pendientes').value;
-  const taller = document.getElementById('taller').value;
-
-  if (!referencia || !ingresadas || !procesadas || !pendientes || !taller) {
-    alert("Por favor, completa todos los campos correctamente.");
+function mostrarTabla(data) {
+  if (!Array.isArray(data) || data.length === 0) {
+    document.getElementById('tablaDatos').innerHTML = '<p>No hay datos registrados.</p>';
     return;
   }
 
-  const formData = new FormData();
-  formData.append('action', 'registrarProduccion');
-  formData.append('referencia', referencia);
-  formData.append('ingresadas', ingresadas);
-  formData.append('procesadas', procesadas);
-  formData.append('pendientes', pendientes);
-  formData.append('taller', taller);
+  let tabla = '<table><thead><tr>';
+  Object.keys(data[0]).forEach(key => {
+    tabla += `<th>${key}</th>`;
+  });
+  tabla += '</tr></thead><tbody>';
 
-  fetch(URL_API, {
-    method: 'POST',
-    body: formData
-  })
-    .then(res => res.json())
-    .then(data => {
-      alert(data.message || 'Datos guardados correctamente.');
-      if (data.success) {
-        document.querySelector('form').reset();
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      alert('Error al registrar: ' + err.message);
+  data.forEach(fila => {
+    tabla += '<tr>';
+    Object.values(fila).forEach(valor => {
+      tabla += `<td>${valor}</td>`;
     });
+    tabla += '</tr>';
+  });
+
+  tabla += '</tbody></table>';
+  document.getElementById('tablaDatos').innerHTML = tabla;
 }
+
+// REGISTRAR
+
+const formRegistro = document.getElementById('formularioRegistro');
+formRegistro.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const datos = new FormData(formRegistro);
+  datos.append('accion', 'registrar');
+  datos.append('proceso', procesoActual);
+
+  try {
+    const res = await fetch(scriptURL, {
+      method: 'POST',
+      body: datos,
+    });
+
+    const result = await res.json();
+    alert(result.mensaje || 'Registrado correctamente.');
+    formRegistro.reset();
+    cargarDatos(procesoActual);
+  } catch (error) {
+    alert('Error al registrar.');
+    console.error(error);
+  }
+});
+
+// ENVIAR
+
+const formEnvio = document.getElementById('formularioEnvio');
+formEnvio.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const datos = new FormData(formEnvio);
+  datos.append('accion', 'enviar');
+  datos.append('proceso', procesoActual);
+
+  try {
+    const res = await fetch(scriptURL, {
+      method: 'POST',
+      body: datos,
+    });
+
+    const result = await res.json();
+    alert(result.mensaje || 'Enviado correctamente.');
+    formEnvio.reset();
+    cargarDatos(procesoActual);
+  } catch (error) {
+    alert('Error al enviar.');
+    console.error(error);
+  }
+});
