@@ -1,56 +1,43 @@
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxjI774UwiL_cuwtw_BKe1dmPzGZBEfKS_b8YA3uMDkuHk76njh57a3OLTpX_cH8wLW/exec"; // Reemplaza con la URL publicada de tu Apps Script
+const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzcQpXWAXD1ec9GsAe9GZ4z71hc9FCG86_tfvd5rML-nf51bJkJ-VKj33X4b90gmHY4/exec";
 
-function registrarProduccion() {
-    const proceso = document.getElementById("proceso").value;
-    const referencia = document.getElementById("referencia").value;
-    const cantidad = document.getElementById("cantidad").value;
-
-    fetch(SCRIPT_URL, {
-        method: "POST",
-        body: JSON.stringify({
-            accion: "registrar",
-            proceso: proceso,
-            REFERENCIA: referencia,
-            CANTIDAD: cantidad
-        })
-    }).then(response => response.json())
-      .then(data => alert(data.status))
-      .catch(error => console.error("Error:", error));
+function mostrarFormulario(proceso) {
+  document.getElementById("tituloFormulario").innerText = `Formulario: ${proceso}`;
+  document.getElementById("proceso").value = proceso;
+  document.getElementById("formularioProceso").reset();
+  document.getElementById("respuesta").innerText = "";
 }
 
-function enviarProduccion() {
-    const proceso = document.getElementById("proceso").value;
-    const referencia = document.getElementById("referenciaEnvio").value;
-    const cantidad = document.getElementById("cantidadEnvio").value;
-    const destino = document.getElementById("destino").value;
+function enviarFormulario(e) {
+  e.preventDefault();
 
-    fetch(SCRIPT_URL, {
-        method: "POST",
-        body: JSON.stringify({
-            accion: "enviar",
-            proceso: proceso,
-            REFERENCIA: referencia,
-            CANTIDAD: cantidad,
-            DESTINO: destino
-        })
-    }).then(response => response.json())
-      .then(data => alert(data.status))
-      .catch(error => console.error("Error:", error));
-}
+  const form = e.target;
+  const data = {
+    proceso: form.proceso.value,
+    id_referencia: Number(form.id_referencia.value),
+    cantidad_asignada: Number(form.cantidad_asignada.value),
+    cantidad_terminada: Number(form.cantidad_terminada.value),
+    id_taller: Number(form.id_taller.value)
+  };
 
-function cargarRegistros() {
-    const proceso = document.getElementById("proceso").value;
-
-    fetch(`${SCRIPT_URL}?proceso=${proceso}`)
-    .then(response => response.json())
-    .then(data => {
-        const tbody = document.querySelector("#tablaRegistros tbody");
-        tbody.innerHTML = "";
-        data.forEach(row => {
-            let tr = document.createElement("tr");
-            tr.innerHTML = `<td>${row.fecha}</td><td>${row.referencia}</td><td>${row.cantidad}</td>`;
-            tbody.appendChild(tr);
-        });
+  fetch(URL_SCRIPT, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+    .then(res => res.json())
+    .then(response => {
+      if (response.success) {
+        document.getElementById("respuesta").innerText =
+          `✅ Registrado: ${response.data.proceso} - ${response.data.referencia} por ${response.data.taller}`;
+        form.reset();
+      } else {
+        document.getElementById("respuesta").innerText = `⚠️ Error: ${response.message}`;
+      }
     })
-    .catch(error => console.error("Error:", error));
+    .catch(err => {
+      console.error(err);
+      document.getElementById("respuesta").innerText = "❌ Error al enviar datos.";
+    });
 }
