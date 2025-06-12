@@ -1,4 +1,4 @@
-const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzhq4lozFp2Ou_zE9VBa3fNeSodI-5IUtpGUefVR3YL6W9tRkOb8cIFEC9SY5qDjHzT/exec";
+const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxmeCSSwyV8XSqQGhAQ98uTaq1ANyWRlon4jQ-mij0RxctdqmBxUiAB2WWmNpUYjoZx/exec";
 
 function mostrarFormulario(proceso) {
   document.getElementById("tituloFormulario").innerText = `Formulario: ${proceso}`;
@@ -13,19 +13,15 @@ function enviarFormulario(e) {
   const form = e.target;
   const data = {
     proceso: form.proceso.value,
-    id_referencia: Number(form.id_referencia.value),
-    cantidad_asignada: Number(form.cantidad_asignada.value),
-    cantidad_terminada: Number(form.cantidad_terminada.value),
-    id_taller: Number(form.id_taller.value)
+    id_referencia: form.id_referencia.value,
+    cantidad_asignada: form.cantidad_asignada.value,
+    cantidad_terminada: form.cantidad_terminada.value,
+    id_taller: form.id_taller.value
   };
 
-  fetch(URL_SCRIPT, {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  })
+  const query = new URLSearchParams(data).toString();
+
+  fetch(`${URL_SCRIPT}?${query}`)
     .then(res => res.json())
     .then(response => {
       if (response.success) {
