@@ -1,98 +1,89 @@
-const scriptURL = 'https://script.google.com/macros/s/AKfycbzpBS6TkLYNXZ2f65HztyKSgMowP3jHwDoJcahiP0a2TFQ7IOfLpJSHDxKV7oo21chS/exec';
+// URL del endpoint del Apps Script
+const URL_API = 'https://script.google.com/macros/s/AKfycby2UsuCuIa2TKpJ9xmZuSRi4Bd5w747ScS8bsUy_bMt70U2aNoGWVDhVQsoWG-gOf7j/exec';
 
-let procesoActual = '';
+// Función para mostrar un formulario y ocultar los demás
+function mostrarFormulario(formularioId) {
+  const formularios = document.querySelectorAll('.formulario-proceso');
+  formularios.forEach(f => f.style.display = 'none');
 
-function seleccionarProceso(proceso) {
-  procesoActual = proceso;
-  document.getElementById('tituloProceso').textContent = `Proceso: ${proceso.charAt(0).toUpperCase() + proceso.slice(1)}`;
-  document.getElementById('formRegistro').style.display = 'block';
-  document.getElementById('formEnvio').style.display = 'block';
-  cargarDatos(proceso);
+  const formularioActivo = document.getElementById(formularioId);
+  if (formularioActivo) formularioActivo.style.display = 'block';
 }
 
-async function cargarDatos(proceso) {
-  try {
-    const res = await fetch(`${scriptURL}?proceso=${proceso}&accion=consultar`);
-    const data = await res.json();
-    mostrarTabla(data);
-  } catch (error) {
-    document.getElementById('tablaDatos').innerHTML = '<p>Error al cargar los datos.</p>';
-    console.error(error);
-  }
-}
+// Registro de troquelado
+function registrarTroquelado(event) {
+  event.preventDefault();
 
-function mostrarTabla(data) {
-  if (!Array.isArray(data) || data.length === 0) {
-    document.getElementById('tablaDatos').innerHTML = '<p>No hay datos registrados.</p>';
+  const referencia = document.getElementById('referencia-troquelado').value.trim();
+  const cantidad = parseInt(document.getElementById('cantidad-troquelado').value);
+
+  if (!referencia || isNaN(cantidad)) {
+    alert("Por favor, completa todos los campos correctamente.");
     return;
   }
 
-  let tabla = '<table><thead><tr>';
-  Object.keys(data[0]).forEach(key => {
-    tabla += `<th>${key}</th>`;
-  });
-  tabla += '</tr></thead><tbody>';
+  const datos = {
+    hoja: 'troquelado',
+    action: 'registrar',
+    referencia,
+    cantidad
+  };
 
-  data.forEach(fila => {
-    tabla += '<tr>';
-    Object.values(fila).forEach(valor => {
-      tabla += `<td>${valor}</td>`;
-    });
-    tabla += '</tr>';
-  });
-
-  tabla += '</tbody></table>';
-  document.getElementById('tablaDatos').innerHTML = tabla;
+  enviarDatos(datos);
 }
 
-// REGISTRAR
+// Enviar desde un proceso a otro taller
+function enviarProceso(event, proceso) {
+  event.preventDefault();
 
-const formRegistro = document.getElementById('formularioRegistro');
-formRegistro.addEventListener('submit', async (e) => {
-  e.preventDefault();
+  const referencia = document.getElementById(`referencia-${proceso}`).value.trim();
+  const cantidad = parseInt(document.getElementById(`cantidad-${proceso}`).value);
+  const destino = document.getElementById(`destino-${proceso}`).value;
 
-  const datos = new FormData(formRegistro);
-  datos.append('accion', 'registrar');
-  datos.append('proceso', procesoActual);
-
-  try {
-    const res = await fetch(scriptURL, {
-      method: 'POST',
-      body: datos,
-    });
-
-    const result = await res.json();
-    alert(result.mensaje || 'Registrado correctamente.');
-    formRegistro.reset();
-    cargarDatos(procesoActual);
-  } catch (error) {
-    alert('Error al registrar.');
-    console.error(error);
+  if (!referencia || isNaN(cantidad) || !destino) {
+    alert("Por favor, completa todos los campos correctamente.");
+    return;
   }
-});
 
-// ENVIAR
+  const datos = {
+    hoja: proceso,
+    action: 'enviar',
+    referencia,
+    cantidad,
+    destino
+  };
 
-const formEnvio = document.getElementById('formularioEnvio');
-formEnvio.addEventListener('submit', async (e) => {
-  e.preventDefault();
+  enviarDatos(datos);
+}
 
-  const datos = new FormData(formEnvio);
-  datos.append('accion', 'enviar');
-  datos.append('proceso', procesoActual);
-
-  try {
-    const res = await fetch(scriptURL, {
-      method: 'POST',
-      body: datos,
+// Función general para enviar datos al Apps Script
+function enviarDatos(payload) {
+  fetch(URL_API, {
+    method: 'POST',
+    mode: 'no-cors', // Importante para evitar CORS error
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  })
+    .then(() => {
+      alert('Datos enviados correctamente');
+      document.querySelectorAll('form').forEach(f => f.reset());
+    })
+    .catch(error => {
+      console.error('Error al enviar:', error);
+      alert('Hubo un error al enviar los datos.');
     });
+}
 
-    const result = await res.json();
-    alert(result.mensaje || 'Enviado correctamente.');
-    formEnvio.reset();
-    cargarDatos(procesoActual);
-  } catch (error) {
-    alert('Error al enviar.');
-    console.error(error);
-  }
+// Asociar eventos al cargar la página
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('form-troquelado').addEventListener('submit', registrarTroquelado);
+
+  ['troquelado', 'armado', 'cerrado', 'volteado'].forEach(proceso => {
+    const form = document.getElementById(`form-${proceso}-envio`);
+    if (form) {
+      form.addEventListener('submit', (e) => enviarProceso(e, proceso));
+    }
+  });
 });
