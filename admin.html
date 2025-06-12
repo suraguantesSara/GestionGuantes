@@ -134,6 +134,7 @@
     <h2 id="tituloProceso">Seleccione un proceso</h2>
     <div id="tablaDatos"></div>
 
+    <!-- FORMULARIO DE REGISTRO -->
     <div id="formRegistro" class="formulario">
       <h3>Registrar Producción</h3>
       <form id="formularioRegistro">
@@ -156,9 +157,26 @@
         <button type="submit">Registrar</button>
       </form>
     </div>
+
+    <!-- FORMULARIO DE ENVÍO -->
+    <div id="formEnvio" class="formulario">
+      <h3>Enviar Producción</h3>
+      <form id="formularioEnvio">
+        <label>Referencia: <input type="text" name="referencia" required></label>
+        <label>Cantidad (docenas): <input type="number" name="cantidad" min="1" required></label>
+        <label>Destino (Taller):
+          <select name="destino" required>
+            <option value="">Selecciona taller</option>
+            <option value="juan perez">Juan Pérez</option>
+            <option value="marta lopez">Marta López</option>
+            <option value="carlos diaz">Carlos Díaz</option>
+          </select>
+        </label>
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
   </main>
 
-  <!-- Incluye el archivo JS directamente desde Apps Script -->
-  <?!= HtmlService.createHtmlOutputFromFile('admin').getContent(); ?>
+  <script src="admin.js"></script>
 </body>
 </html>
