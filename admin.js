@@ -28,31 +28,31 @@ function registrarProducto(event) {
   event.preventDefault();
 
   const referencia = document.getElementById('referencia').value.trim();
-  const ingresadas = parseInt(document.getElementById('ingresadas').value);
-  const procesadas = parseInt(document.getElementById('procesadas').value);
-  const pendientes = parseInt(document.getElementById('pendientes').value);
+  const ingresadas = document.getElementById('ingresadas').value;
+  const procesadas = document.getElementById('procesadas').value;
+  const pendientes = document.getElementById('pendientes').value;
   const taller = document.getElementById('taller').value;
 
-  if (!referencia || isNaN(ingresadas) || isNaN(procesadas) || isNaN(pendientes) || !taller) {
+  if (!referencia || !ingresadas || !procesadas || !pendientes || !taller) {
     alert("Por favor, completa todos los campos correctamente.");
     return;
   }
 
+  const formData = new FormData();
+  formData.append('action', 'registrarProduccion');
+  formData.append('referencia', referencia);
+  formData.append('ingresadas', ingresadas);
+  formData.append('procesadas', procesadas);
+  formData.append('pendientes', pendientes);
+  formData.append('taller', taller);
+
   fetch(URL_API, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      action: 'registrarProduccion',
-      referencia,
-      ingresadas,
-      procesadas,
-      pendientes,
-      taller
-    })
+    body: formData
   })
     .then(res => res.json())
     .then(data => {
-      alert(data.message);
+      alert(data.message || 'Datos guardados correctamente.');
       if (data.success) {
         document.querySelector('form').reset();
       }
@@ -62,6 +62,3 @@ function registrarProducto(event) {
       alert('Error al registrar: ' + err.message);
     });
 }
-
-
-
