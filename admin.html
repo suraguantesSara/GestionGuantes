@@ -1,154 +1,172 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Gestión de Procesos</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestión de Guantes - Producción</title>
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
       display: flex;
+      margin: 0;
     }
-
     header {
-      position: fixed;
-      top: 0;
-      left: 200px;
-      right: 0;
-      background-color: #333;
-      color: #fff;
-      padding: 15px;
-      z-index: 1;
-    }
-
-    .sidebar {
-      width: 200px;
-      background-color: #f4f4f4;
-      height: 100vh;
-      padding-top: 20px;
-      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-      position: fixed;
-    }
-
-    .sidebar button {
+      background-color: #2c3e50;
+      color: white;
+      padding: 1rem;
+      text-align: center;
       width: 100%;
-      padding: 15px;
-      border: none;
+    }
+    .sidebar {
+      background-color: #34495e;
+      color: white;
+      width: 200px;
+      padding-top: 2rem;
+      height: 100vh;
+    }
+    .sidebar button {
+      display: block;
+      width: 100%;
+      padding: 1rem;
       background: none;
+      color: white;
+      border: none;
       text-align: left;
-      font-size: 16px;
       cursor: pointer;
     }
-
     .sidebar button:hover {
-      background-color: #ddd;
+      background-color: #3d5a73;
     }
-
     main {
-      margin-left: 200px;
-      margin-top: 70px;
-      padding: 20px;
-      flex: 1;
+      flex-grow: 1;
+      padding: 2rem;
     }
-
-    h2 {
-      margin-top: 0;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-
-    table, th, td {
-      border: 1px solid #ccc;
-    }
-
-    th, td {
-      padding: 10px;
-      text-align: left;
-    }
-
-    .formulario {
-      margin-top: 20px;
+    section {
       display: none;
     }
-
+    section.active {
+      display: block;
+    }
+    form {
+      margin-bottom: 2rem;
+    }
     label {
       display: block;
-      margin-bottom: 10px;
+      margin: 0.5rem 0 0.2rem;
     }
-
-    input, select {
-      padding: 6px;
+    input, select, button {
+      padding: 0.5rem;
       width: 100%;
       max-width: 300px;
-    }
-
-    button[type="submit"] {
-      margin-top: 10px;
-      padding: 10px 20px;
-    }
-
-    .btn-secundario {
-      background-color: #ccc;
-      border: none;
-      padding: 10px;
-      cursor: pointer;
+      margin-bottom: 1rem;
     }
   </style>
 </head>
 <body>
-
   <div class="sidebar">
-    <button onclick="seleccionarProceso('troquelado')">Troquelado</button>
-    <button onclick="seleccionarProceso('armado')">Armado</button>
-    <button onclick="seleccionarProceso('cerrado')">Cerrado</button>
-    <button onclick="seleccionarProceso('volteado')">Volteado</button>
-    <button onclick="seleccionarProceso('stock')">Stock Final</button>
+    <button onclick="mostrarProceso('troquelado')">Troquelado</button>
+    <button onclick="mostrarProceso('armado')">Armado</button>
+    <button onclick="mostrarProceso('cerrado')">Cerrado</button>
+    <button onclick="mostrarProceso('volteado')">Volteado</button>
+    <button onclick="mostrarProceso('stock')">Stock Final</button>
   </div>
 
-  <header>
-    <h1>Gestión de Procesos</h1>
-    <button class="btn-secundario" onclick="window.history.back()">← Atrás</button>
-  </header>
+  <div style="flex-grow: 1;">
+    <header>
+      <h1>Control de Producción de Guantes</h1>
+      <button onclick="window.history.back()">⬅ Volver</button>
+    </header>
 
-  <main>
-    <h2 id="tituloProceso">Seleccione un proceso</h2>
-    <div id="tablaDatos"></div>
+    <main>
+      <!-- TROQUELADO -->
+      <section id="troquelado" class="active">
+        <h2>Troquelado</h2>
+        <form id="formTroquelado">
+          <label for="refTroq">Referencia:</label>
+          <input type="text" id="refTroq" name="referencia" required />
 
-    <!-- FORMULARIO DE REGISTRO -->
-    <div id="formRegistro" class="formulario">
-      <h3>Registrar Producción</h3>
-      <form id="formularioRegistro">
-        <label>Referencia: <input type="text" name="referencia" required></label>
-        <label>Cantidad (docenas): <input type="number" name="cantidad" min="1" required></label>
-        <button type="submit">Registrar</button>
-      </form>
-    </div>
+          <label for="cantTroq">Cantidad (docenas):</label>
+          <input type="number" id="cantTroq" name="cantidad" required />
 
-    <!-- FORMULARIO DE ENVÍO -->
-    <div id="formEnvio" class="formulario">
-      <h3>Enviar a otro Taller</h3>
-      <form id="formularioEnvio">
-        <label>Referencia: <input type="text" name="referencia" required></label>
-        <label>Cantidad a enviar (docenas): <input type="number" name="cantidad" min="1" required></label>
-        <label>Taller destino:
-          <select name="destino" required>
-            <option value="">Seleccione destino</option>
-            <option value="armado">Armado</option>
-            <option value="cerrado">Cerrado</option>
-            <option value="volteado">Volteado</option>
-            <option value="stock">Stock Final</option>
-          </select>
-        </label>
-        <button type="submit">Enviar</button>
-      </form>
-    </div>
-  </main>
+          <button type="submit">Registrar</button>
+        </form>
+
+        <form id="envioTroquelado">
+          <label for="refEnvioTroq">Referencia:</label>
+          <input type="text" id="refEnvioTroq" name="referencia" required />
+
+          <label for="cantEnvioTroq">Cantidad a enviar:</label>
+          <input type="number" id="cantEnvioTroq" name="cantidad" required />
+
+          <label for="destinoTroq">Destino (taller/persona):</label>
+          <input type="text" id="destinoTroq" name="destino" required />
+
+          <button type="submit">Enviar a Armado</button>
+        </form>
+      </section>
+
+      <!-- OTRAS SECCIONES (solo envíos) -->
+      <section id="armado">
+        <h2>Armado</h2>
+        <form id="envioArmado">
+          <label for="refArmado">Referencia:</label>
+          <input type="text" id="refArmado" name="referencia" required />
+
+          <label for="cantArmado">Cantidad a enviar:</label>
+          <input type="number" id="cantArmado" name="cantidad" required />
+
+          <label for="destinoArmado">Destino (taller/persona):</label>
+          <input type="text" id="destinoArmado" name="destino" required />
+
+          <button type="submit">Enviar a Cerrado</button>
+        </form>
+      </section>
+
+      <section id="cerrado">
+        <h2>Cerrado</h2>
+        <form id="envioCerrado">
+          <label for="refCerrado">Referencia:</label>
+          <input type="text" id="refCerrado" name="referencia" required />
+
+          <label for="cantCerrado">Cantidad a enviar:</label>
+          <input type="number" id="cantCerrado" name="cantidad" required />
+
+          <label for="destinoCerrado">Destino (taller/persona):</label>
+          <input type="text" id="destinoCerrado" name="destino" required />
+
+          <button type="submit">Enviar a Volteado</button>
+        </form>
+      </section>
+
+      <section id="volteado">
+        <h2>Volteado</h2>
+        <form id="envioVolteado">
+          <label for="refVolteado">Referencia:</label>
+          <input type="text" id="refVolteado" name="referencia" required />
+
+          <label for="cantVolteado">Cantidad a enviar:</label>
+          <input type="number" id="cantVolteado" name="cantidad" required />
+
+          <label for="destinoVolteado">Destino (taller/persona):</label>
+          <input type="text" id="destinoVolteado" name="destino" required />
+
+          <button type="submit">Enviar a Stock</button>
+        </form>
+      </section>
+
+      <section id="stock">
+        <h2>Stock Final</h2>
+        <p>Aquí se visualizarán los guantes que hayan completado el proceso.</p>
+      </section>
+    </main>
+  </div>
 
   <script src="admin.js"></script>
+  <script>
+    function mostrarProceso(id) {
+      document.querySelectorAll("section").forEach(sec => sec.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+  </script>
 </body>
 </html>
-
