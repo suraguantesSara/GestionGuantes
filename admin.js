@@ -1,44 +1,39 @@
-const URL_API = 'https://script.google.com/macros/s/AKfycbxf-sy0E1fBZskrw_BUHbHURGZMc1RCaVxm-ddwGXs6ML8YjsvFS7khx6GT6YkUdStNVw/exec';
+const URL_API = 'https://script.google.com/macros/s/AKfycbx6_4JYvGqEzznnPv0Zz-92c7g5BWi3wdBOlnRrduZAmN9spS8BplRewwYtEBtSgcqD/exec';
 
-function cargarVista(proceso) {
+function cargarVista() {
   const contenido = document.getElementById('formulario');
 
-  if (proceso === 'troquelado') {
-    contenido.innerHTML = `
-      <h2>Troquelado</h2>
-      <form onsubmit="registrarProducto(event)">
-        <label>Referencia: <input type="text" id="referencia" required></label><br><br>
-        <label>Cantidad (docenas): <input type="number" id="cantidad" min="1" required></label><br><br>
-        <label>Responsable: <input type="text" id="responsable" required></label><br><br>
-        <button type="submit">Registrar</button>
-      </form>
-    `;
-  } else {
-    contenido.innerHTML = `
-      <h2>Enviar desde ${capitalizar(proceso)}</h2>
-      <form onsubmit="enviarProducto(event, '${proceso}')">
-        <label>Referencia: <input type="text" id="referencia" required></label><br><br>
-        <label>Cantidad (docenas): <input type="number" id="cantidad" min="1" required></label><br><br>
-        <label>Destino:
-          <select id="destino" required>
-            ${generarOpcionesDestino(proceso)}
-          </select>
-        </label><br><br>
-        <label>Responsable: <input type="text" id="responsable" required></label><br><br>
-        <button type="submit">Enviar</button>
-      </form>
-    `;
-  }
+  contenido.innerHTML = `
+    <h2>Registrar Producción</h2>
+    <form onsubmit="registrarProducto(event)">
+      <label>Referencia: <input type="text" id="referencia" required></label><br><br>
+      <label>Doc. Ingresadas: <input type="number" id="ingresadas" min="0" required></label><br><br>
+      <label>Doc. Procesadas: <input type="number" id="procesadas" min="0" required></label><br><br>
+      <label>Doc. Pendientes: <input type="number" id="pendientes" min="0" required></label><br><br>
+      <label>Taller:
+        <select id="taller" required>
+          <option value="">Selecciona un taller</option>
+          <option value="troquelado">Troquelado</option>
+          <option value="armado">Armado</option>
+          <option value="cerrado">Cerrado</option>
+          <option value="volteado">Volteado</option>
+        </select>
+      </label><br><br>
+      <button type="submit">Registrar</button>
+    </form>
+  `;
 }
 
 function registrarProducto(event) {
   event.preventDefault();
 
   const referencia = document.getElementById('referencia').value.trim();
-  const cantidad = parseInt(document.getElementById('cantidad').value);
-  const responsable = document.getElementById('responsable').value.trim();
+  const ingresadas = parseInt(document.getElementById('ingresadas').value);
+  const procesadas = parseInt(document.getElementById('procesadas').value);
+  const pendientes = parseInt(document.getElementById('pendientes').value);
+  const taller = document.getElementById('taller').value;
 
-  if (!referencia || !cantidad || !responsable) {
+  if (!referencia || isNaN(ingresadas) || isNaN(procesadas) || isNaN(pendientes) || !taller) {
     alert("Por favor, completa todos los campos correctamente.");
     return;
   }
@@ -47,10 +42,12 @@ function registrarProducto(event) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      action: 'registrarProducto',
+      action: 'registrarProduccion',
       referencia,
-      cantidad,
-      responsable
+      ingresadas,
+      procesadas,
+      pendientes,
+      taller
     })
   })
     .then(res => res.json())
@@ -64,56 +61,6 @@ function registrarProducto(event) {
       console.error(err);
       alert('Error al registrar: ' + err.message);
     });
-}
-
-function enviarProducto(event, origen) {
-  event.preventDefault();
-
-  const referencia = document.getElementById('referencia').value.trim();
-  const cantidad = parseInt(document.getElementById('cantidad').value);
-  const destino = document.getElementById('destino').value;
-  const responsable = document.getElementById('responsable').value.trim();
-
-  if (!referencia || !cantidad || !destino || !responsable) {
-    alert("Por favor, completa todos los campos correctamente.");
-    return;
-  }
-
-  fetch(URL_API, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      action: 'enviarProducto',
-      referencia,
-      cantidad,
-      origen,
-      destino,
-      responsable
-    })
-  })
-    .then(res => res.json())
-    .then(data => {
-      alert(data.message);
-      if (data.success) {
-        document.querySelector('form').reset();
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      alert('Error al enviar: ' + err.message);
-    });
-}
-
-function capitalizar(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-function generarOpcionesDestino(origen) {
-  const procesos = ['troquelado', 'armado', 'cerrado', 'volteado'];
-  return procesos
-    .filter(p => p !== origen)
-    .map(d => `<option value="${d}">${capitalizar(d)}</option>`)
-    .join('');
 }
 
 
