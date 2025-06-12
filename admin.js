@@ -1,89 +1,91 @@
-// URL del endpoint del Apps Script
-const URL_API = 'https://script.google.com/macros/s/AKfycby2UsuCuIa2TKpJ9xmZuSRi4Bd5w747ScS8bsUy_bMt70U2aNoGWVDhVQsoWG-gOf7j/exec';
+// admin.js
 
-// Función para mostrar un formulario y ocultar los demás
-function mostrarFormulario(formularioId) {
-  const formularios = document.querySelectorAll('.formulario-proceso');
-  formularios.forEach(f => f.style.display = 'none');
+// Esperar a que el documento esté completamente cargado
 
-  const formularioActivo = document.getElementById(formularioId);
-  if (formularioActivo) formularioActivo.style.display = 'block';
-}
+document.addEventListener("DOMContentLoaded", () => {
+  // Botones y formularios
+  const btnTroquelado = document.getElementById("btn-troquelado");
+  const btnArmado = document.getElementById("btn-armado");
+  const btnCerrado = document.getElementById("btn-cerrado");
+  const btnVolteado = document.getElementById("btn-volteado");
+  const btnStock = document.getElementById("btn-stock");
 
-// Registro de troquelado
-function registrarTroquelado(event) {
-  event.preventDefault();
+  const seccionTroquelado = document.getElementById("seccion-troquelado");
+  const seccionArmado = document.getElementById("seccion-armado");
+  const seccionCerrado = document.getElementById("seccion-cerrado");
+  const seccionVolteado = document.getElementById("seccion-volteado");
+  const seccionStock = document.getElementById("seccion-stock");
 
-  const referencia = document.getElementById('referencia-troquelado').value.trim();
-  const cantidad = parseInt(document.getElementById('cantidad-troquelado').value);
+  const formularioTroquelado = document.getElementById("form-troquelado");
+  const btnEnviarTroquelado = document.getElementById("btn-enviar-troquelado");
 
-  if (!referencia || isNaN(cantidad)) {
-    alert("Por favor, completa todos los campos correctamente.");
-    return;
+  // Mostrar secciones al hacer clic
+  function ocultarSecciones() {
+    seccionTroquelado.style.display = "none";
+    seccionArmado.style.display = "none";
+    seccionCerrado.style.display = "none";
+    seccionVolteado.style.display = "none";
+    seccionStock.style.display = "none";
   }
 
-  const datos = {
-    hoja: 'troquelado',
-    action: 'registrar',
-    referencia,
-    cantidad
-  };
+  btnTroquelado?.addEventListener("click", () => {
+    ocultarSecciones();
+    seccionTroquelado.style.display = "block";
+  });
 
-  enviarDatos(datos);
-}
+  btnArmado?.addEventListener("click", () => {
+    ocultarSecciones();
+    seccionArmado.style.display = "block";
+  });
 
-// Enviar desde un proceso a otro taller
-function enviarProceso(event, proceso) {
-  event.preventDefault();
+  btnCerrado?.addEventListener("click", () => {
+    ocultarSecciones();
+    seccionCerrado.style.display = "block";
+  });
 
-  const referencia = document.getElementById(`referencia-${proceso}`).value.trim();
-  const cantidad = parseInt(document.getElementById(`cantidad-${proceso}`).value);
-  const destino = document.getElementById(`destino-${proceso}`).value;
+  btnVolteado?.addEventListener("click", () => {
+    ocultarSecciones();
+    seccionVolteado.style.display = "block";
+  });
 
-  if (!referencia || isNaN(cantidad) || !destino) {
-    alert("Por favor, completa todos los campos correctamente.");
-    return;
-  }
+  btnStock?.addEventListener("click", () => {
+    ocultarSecciones();
+    seccionStock.style.display = "block";
+  });
 
-  const datos = {
-    hoja: proceso,
-    action: 'enviar',
-    referencia,
-    cantidad,
-    destino
-  };
+  // Función para registrar troquelado
+  formularioTroquelado?.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  enviarDatos(datos);
-}
+    const referencia = document.getElementById("referencia").value;
+    const cantidad = document.getElementById("cantidad").value;
+    const fecha = new Date().toLocaleDateString("es-ES");
 
-// Función general para enviar datos al Apps Script
-function enviarDatos(payload) {
-  fetch(URL_API, {
-    method: 'POST',
-    mode: 'no-cors', // Importante para evitar CORS error
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(payload)
-  })
-    .then(() => {
-      alert('Datos enviados correctamente');
-      document.querySelectorAll('form').forEach(f => f.reset());
-    })
-    .catch(error => {
-      console.error('Error al enviar:', error);
-      alert('Hubo un error al enviar los datos.');
-    });
-}
+    try {
+      const response = await fetch(
+        "https://script.google.com/macros/s/AKfycby2UsuCuIa2TKpJ9xmZuSRi4Bd5w747ScS8bsUy_bMt70U2aNoGWVDhVQsoWG-gOf7j/exec",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            proceso: "troquelado",
+            referencia,
+            cantidad,
+            fecha,
+            enviado: "No",
+            destino: "",
+          }),
+        }
+      );
 
-// Asociar eventos al cargar la página
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('form-troquelado').addEventListener('submit', registrarTroquelado);
-
-  ['troquelado', 'armado', 'cerrado', 'volteado'].forEach(proceso => {
-    const form = document.getElementById(`form-${proceso}-envio`);
-    if (form) {
-      form.addEventListener('submit', (e) => enviarProceso(e, proceso));
+      const data = await response.json();
+      alert("✅ Registrado correctamente");
+      formularioTroquelado.reset();
+    } catch (error) {
+      console.error("Error al registrar:", error);
+      alert("❌ Error al registrar. Verifica tu conexión o intenta más tarde.");
     }
   });
 });
