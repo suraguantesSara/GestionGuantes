@@ -1,48 +1,51 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control de Producción</title>
-  <link rel "style.sheet" href="admin.css"/>
-    <script src="admin.js"></script>
+  <meta charset="UTF-8">
+  <title>Gestión de Procesos de Guantes</title>
+  <link rel="stylesheet" href="admin.css">
 </head>
 <body>
-    <h1>Control de Producción</h1>
-    
-    <label for="proceso">Seleccionar Proceso:</label>
-    <select id="proceso">
-        <option value="troquelado">Troquelado</option>
-        <option value="armado">Armado</option>
-        <option value="cerrado">Cerrado</option>
-    </select>
+  <header>
+    <h1>Gestión de Procesos</h1>
+    <button onclick="history.back()">← Atrás</button>
+  </header>
 
-    <h2>Registrar Producción</h2>
-    <input type="text" id="referencia" placeholder="Referencia">
-    <input type="number" id="cantidad" placeholder="Cantidad">
-    <button onclick="registrarProduccion()">Registrar</button>
+  <div class="container">
+    <aside>
+      <nav>
+        <button onclick="mostrarFormulario('troquelado')">Troquelado</button>
+        <button onclick="mostrarFormulario('armado')">Armado</button>
+        <button onclick="mostrarFormulario('cerrado')">Cerrado</button>
+        <button onclick="mostrarFormulario('volteado')">Volteado</button>
+      </nav>
+    </aside>
 
-    <h2>Enviar Productos</h2>
-    <input type="text" id="referenciaEnvio" placeholder="Referencia">
-    <input type="number" id="cantidadEnvio" placeholder="Cantidad">
-    <select id="destino">
-        <option value="armado">Armado</option>
-        <option value="cerrado">Cerrado</option>
-        <option value="volteado">Volteado</option>
-        <option value="stock_final">Stock Final</option>
-    </select>
-    <button onclick="enviarProduccion()">Enviar</button>
+    <main>
+      <form id="formularioProceso" onsubmit="enviarFormulario(event)">
+        <h2 id="tituloFormulario">Formulario</h2>
+        <input type="hidden" id="proceso" name="proceso">
 
-    <h2>Registros</h2>
-    <table id="tablaRegistros">
-        <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>Referencia</th>
-                <th>Cantidad</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+        <label for="id_referencia">ID Referencia:</label>
+        <input type="number" name="id_referencia" required>
+
+        <label for="cantidad_asignada">Cantidad Asignada (docenas):</label>
+        <input type="number" name="cantidad_asignada" step="0.1" required>
+
+        <label for="cantidad_terminada">Cantidad Terminada (docenas):</label>
+        <input type="number" name="cantidad_terminada" step="0.1" required>
+
+        <label for="id_taller">ID Taller:</label>
+        <input type="number" name="id_taller" required>
+
+        <button type="submit">Registrar Movimiento</button>
+      </form>
+
+      <div id="respuesta"></div>
+    </main>
+  </div>
+
+  <script src="admin.js"></script>
 </body>
 </html>
+
