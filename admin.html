@@ -1,33 +1,154 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Seguimiento de Producción</title>
-  <link rel="stylesheet" href="admin.css" />
+  <meta charset="UTF-8">
+  <title>Gestión de Procesos</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 200px;
+      right: 0;
+      background-color: #333;
+      color: #fff;
+      padding: 15px;
+      z-index: 1;
+    }
+
+    .sidebar {
+      width: 200px;
+      background-color: #f4f4f4;
+      height: 100vh;
+      padding-top: 20px;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      position: fixed;
+    }
+
+    .sidebar button {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      background: none;
+      text-align: left;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .sidebar button:hover {
+      background-color: #ddd;
+    }
+
+    main {
+      margin-left: 200px;
+      margin-top: 70px;
+      padding: 20px;
+      flex: 1;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    .formulario {
+      margin-top: 20px;
+      display: none;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    input, select {
+      padding: 6px;
+      width: 100%;
+      max-width: 300px;
+    }
+
+    button[type="submit"] {
+      margin-top: 10px;
+      padding: 10px 20px;
+    }
+
+    .btn-secundario {
+      background-color: #ccc;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <div class="layout">
-    <aside class="sidebar">
-      <h2>Procesos</h2>
-      <ul>
-        <li><button onclick="cargarVista('troquelado')">Troquelado</button></li>
-        <li><button onclick="cargarVista('armado')">Armado</button></li>
-        <li><button onclick="cargarVista('cerrado')">Cerrado</button></li>
-        <li><button onclick="cargarVista('volteado')">Volteado</button></li>
-      </ul>
-    </aside>
-    <main class="contenido">
-      <header class="header">
-        <h1>🧤 Seguimiento de Producción</h1>
-        <button class="volver" onclick="window.history.back()">← Volver</button>
-      </header>
-      <section id="formulario">
-        <!-- Aquí irá el contenido dinámico -->
-      </section>
-    </main>
+
+  <div class="sidebar">
+    <button onclick="seleccionarProceso('troquelado')">Troquelado</button>
+    <button onclick="seleccionarProceso('armado')">Armado</button>
+    <button onclick="seleccionarProceso('cerrado')">Cerrado</button>
+    <button onclick="seleccionarProceso('volteado')">Volteado</button>
+    <button onclick="seleccionarProceso('stock')">Stock Final</button>
   </div>
+
+  <header>
+    <h1>Gestión de Procesos</h1>
+    <button class="btn-secundario" onclick="window.history.back()">← Atrás</button>
+  </header>
+
+  <main>
+    <h2 id="tituloProceso">Seleccione un proceso</h2>
+    <div id="tablaDatos"></div>
+
+    <!-- FORMULARIO DE REGISTRO -->
+    <div id="formRegistro" class="formulario">
+      <h3>Registrar Producción</h3>
+      <form id="formularioRegistro">
+        <label>Referencia: <input type="text" name="referencia" required></label>
+        <label>Cantidad (docenas): <input type="number" name="cantidad" min="1" required></label>
+        <button type="submit">Registrar</button>
+      </form>
+    </div>
+
+    <!-- FORMULARIO DE ENVÍO -->
+    <div id="formEnvio" class="formulario">
+      <h3>Enviar a otro Taller</h3>
+      <form id="formularioEnvio">
+        <label>Referencia: <input type="text" name="referencia" required></label>
+        <label>Cantidad a enviar (docenas): <input type="number" name="cantidad" min="1" required></label>
+        <label>Taller destino:
+          <select name="destino" required>
+            <option value="">Seleccione destino</option>
+            <option value="armado">Armado</option>
+            <option value="cerrado">Cerrado</option>
+            <option value="volteado">Volteado</option>
+            <option value="stock">Stock Final</option>
+          </select>
+        </label>
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
+  </main>
 
   <script src="admin.js"></script>
 </body>
 </html>
+
