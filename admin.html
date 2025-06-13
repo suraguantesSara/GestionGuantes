@@ -2,50 +2,49 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Gestión de Procesos de Guantes</title>
+  <title>Admin - Gestión de Guantes</title>
   <link rel="stylesheet" href="admin.css">
 </head>
 <body>
-  <header>
-    <h1>Gestión de Procesos</h1>
-    <button onclick="history.back()">← Atrás</button>
-  </header>
+  <h1>Panel de Administración</h1>
 
-  <div class="container">
-    <aside>
-      <nav>
-        <button onclick="mostrarFormulario('troquelado')">Troquelado</button>
-        <button onclick="mostrarFormulario('armado')">Armado</button>
-        <button onclick="mostrarFormulario('cerrado')">Cerrado</button>
-        <button onclick="mostrarFormulario('volteado')">Volteado</button>
-      </nav>
-    </aside>
+  <h2>Crear nueva Referencia</h2>
+  <form action="/crear-referencia" method="POST">
+    Nombre: <input type="text" name="nombre" required><br>
+    Descripción: <input type="text" name="descripcion"><br>
+    <button type="submit">Crear Referencia</button>
+  </form>
 
-    <main>
-      <form id="formularioProceso" onsubmit="enviarFormulario(event)">
-        <h2 id="tituloFormulario">Formulario</h2>
-        <input type="hidden" id="proceso" name="proceso">
+  <h2>Registrar nuevo Taller</h2>
+  <form action="/crear-taller" method="POST">
+    Nombre: <input type="text" name="nombre" required><br>
+    Área: 
+    <select name="area">
+      <option value="armado">Armado</option>
+      <option value="cerrado">Cerrado</option>
+      <option value="volteado">Volteado</option>
+    </select><br>
+    <button type="submit">Crear Taller</button>
+  </form>
 
-        <label for="id_referencia">ID Referencia:</label>
-        <input type="number" name="id_referencia" required>
+  <h2>Agregar Docena Troquelada</h2>
+  <form action="/crear-docena" method="POST">
+    ID Referencia: <input type="number" name="referencia_id" required><br>
+    ID Taller Armado: <input type="number" name="taller_id" required><br>
+    <button type="submit">Registrar Docena</button>
+  </form>
 
-        <label for="cantidad_asignada">Cantidad Asignada (docenas):</label>
-        <input type="number" name="cantidad_asignada" step="0.1" required>
-
-        <label for="cantidad_terminada">Cantidad Terminada (docenas):</label>
-        <input type="number" name="cantidad_terminada" step="0.1" required>
-
-        <label for="id_taller">ID Taller:</label>
-        <input type="number" name="id_taller" required>
-
-        <button type="submit">Registrar Movimiento</button>
-      </form>
-
-      <div id="respuesta"></div>
-    </main>
-  </div>
-
-  <script src="admin.js"></script>
+  <h2>Registrar Movimiento</h2>
+  <form action="/registrar-movimiento" method="POST">
+    ID Docena: <input type="number" name="docena_id" required><br>
+    Proceso Origen: <input type="text" name="origen"><br>
+    Proceso Destino: <input type="text" name="destino"><br>
+    ID Taller Origen: <input type="number" name="taller_origen"><br>
+    ID Taller Destino: <input type="number" name="taller_destino"><br>
+    Observaciones: <input type="text" name="observaciones"><br>
+    <button type="submit">Registrar Movimiento</button>
+  </form>
 </body>
 </html>
+
 
