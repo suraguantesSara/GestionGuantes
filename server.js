@@ -33,119 +33,100 @@ app.get('/api/docenas', async (req, res) => {
     query += ' WHERE referencia_id IN (SELECT id FROM referencias WHERE nombre = $1)';
     params.push(referencia);
   } else if (proceso) {
-    query += ' WHERE estado_actual = $1';
-    params.push(proceso);
-  }
+    query += ' WHERE estado_actual 
 
+const express = require("express");
+const app = express();
+const cors = require("cors");
+const { Pool } = require("pg");
+
+app.use(cors());
+app.use(express.json());
+app.use(express.static("public")); // asegúrate de tener admin.html ahí
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL || "tu_url_de_postgres"
+});
+
+// ================== RUTAS API ADMIN ==================
+
+app.post("/crear-taller", async (req, res) => {
   try {
-    const result = await pool.query(query, params);
-    res.json(result.rows);
+    const { nombre, area } = req.body;
+    await pool.query("INSERT INTO talleres (nombre, area) VALUES ($1, $2)", [nombre, area]);
+    res.send("Taller creado exitosamente.");
   } catch (err) {
     console.error(err);
-    res.status(500).send('Error en la base de datos');
+    res.status(500).send("Error al crear taller");
   }
 });
 
-// Crear referencia
-app.post('/crear-referencia', async (req, res) => {
-  const { nombre, descripcion } = req.body;
+app.post("/crear-referencia", async (req, res) => {
   try {
-    await pool.query('INSERT INTO referencias (nombre, descripcion) VALUES ($1, $2)', [nombre, descripcion]);
-    res.send('Referencia creada exitosamente.');
+    const { nombre, descripcion } = req.body;
+    await pool.query("INSERT INTO referencias (nombre, descripcion) VALUES ($1, $2)", [nombre, descripcion]);
+    res.send("Referencia creada exitosamente.");
   } catch (err) {
-    console.error("❌ ERROR en /crear-referencia:", err);
-    res.status(500).send('Error al crear la referencia');
+    console.error(err);
+    res.status(500).send("Error al crear referencia");
   }
 });
 
-// Crear taller
-app.post('/crear-taller', async (req, res) => {
-  const { nombre, area } = req.body;
+app.post("/crear-docena", async (req, res) => {
   try {
-    await pool.query('INSERT INTO talleres (nombre, area) VALUES ($1, $2)', [nombre, area]);
-    res.send('Taller creado exitosamente.');
-  } catch (err) {
-    console.error("❌ ERROR en /crear-taller:", err);
-    res.status(500).send('Error al crear el taller');
-  }
-});
-
-// Crear docenas
-app.post('/crear-docena', async (req, res) => {
-  const { referencia_id, taller_actual_id } = req.body;
-  try {
-    await pool.query('INSERT INTO docenas (referencia_id, taller_actual_id) VALUES ($1, $2)', [referencia_id, taller_actual_id]);
-    res.send('Docena registrada exitosamente.');
-  } catch (err) {
-    console.error("❌ ERROR en /crear-docena:", err);
-    res.status(500).send('Error al registrar la docena');
-  }
-});
-
-// Registrar movimiento
-app.post('/registrar-movimiento', async (req, res) => {
-  const { docena_id, proceso_origen, observaciones } = req.body;
-
-  const procesoSecuencia = {
-    troquelado: 'armado',
-    armado: 'cerrado',
-    cerrado: 'volteado',
-    volteado: 'stock final'
-  };
-
-  const proceso_destino = procesoSecuencia[proceso_origen];
-  try {
-    const docena = await pool.query('SELECT * FROM docenas WHERE id = $1', [docena_id]);
-    const taller_origen_id = docena.rows[0].taller_actual_id;
-
-    const talleresDestino = await pool.query(
-      'SELECT id FROM talleres WHERE area = $1 LIMIT 1',
-      [proceso_destino]
-    );
-
-    const taller_destino_id = talleresDestino.rows[0].id;
-
+    const { referencia_id, taller_actual_id } = req.body;
     await pool.query(
-      'INSERT INTO movimientos (docena_id, proceso_origen, proceso_destino, taller_origen_id, taller_destino_id, observaciones) VALUES ($1, $2, $3, $4, $5, $6)',
-      [docena_id, proceso_origen, proceso_destino, taller_origen_id, taller_destino_id, observaciones || null]
+      "INSERT INTO docenas (referencia_id, taller_actual_id) VALUES ($1, $2)",
+      [referencia_id, taller_actual_id]
     );
+    res.send("Docena creada exitosamente.");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error al crear docena");
+  }
+});
 
+app.post("/registrar-movimiento", async (req, res) => {
+  try {
+    const { docena_id, proceso_origen, observaciones } = req.body;
     await pool.query(
-      'UPDATE docenas SET estado_actual = $1, taller_actual_id = $2 WHERE id = $3',
-      [proceso_destino, taller_destino_id, docena_id]
+      "INSERT INTO movimientos (docena_id, proceso_origen, observaciones, fecha) VALUES ($1, $2, $3, NOW())",
+      [docena_id, proceso_origen, observaciones]
     );
-
-    res.send('Movimiento registrado exitosamente.');
+    res.send("Movimiento registrado exitosamente.");
   } catch (err) {
-    console.error("❌ ERROR en /registrar-movimiento:", err);
-    res.status(500).send('Error al registrar el movimiento');
+    console.error(err);
+    res.status(500).send("Error al registrar movimiento");
   }
 });
 
-// Obtener talleres
-app.get('/api/talleres', async (req, res) => {
+// ================== ENDPOINTS PARA SELECT ==================
+
+app.get("/api/referencias", async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM talleres');
+    const result = await pool.query("SELECT id, nombre FROM referencias");
     res.json(result.rows);
   } catch (err) {
     console.error(err);
-    res.status(500).send('Error al obtener talleres');
+    res.status(500).send("Error cargando referencias");
   }
 });
 
-// Obtener referencias
-app.get('/api/referencias', async (req, res) => {
+app.get("/api/docenas", async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM referencias');
+    const result = await pool.query("SELECT id FROM docenas ORDER BY id DESC");
     res.json(result.rows);
   } catch (err) {
     console.error(err);
-    res.status(500).send('Error al obtener referencias');
+    res.status(500).send("Error cargando docenas");
   }
 });
 
-// Iniciar servidor
+// ================== ARRANQUE SERVIDOR ==================
+
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`✅ Servidor escuchando en puerto ${PORT}`);
+  console.log(`Servidor corriendo en puerto ${PORT}`);
 });
+
 
