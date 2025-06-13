@@ -1,22 +1,33 @@
 const express = require("express");
-const app = express();
 const cors = require("cors");
 const { Pool } = require("pg");
+const path = require("path");
 
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static("public")); // asegúrate de tener admin.html ahí
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public")); // <-- Asegúrate que index.html esté en la carpeta /public
 
+// Conexión a PostgreSQL
 const pool = new Pool({
-  user: 'gestionguantes_user',
-  host: 'dpg-d1639j24d50c73f0vig0-a.oregon-postgres.render.com',
-  database: 'gestionguantes',
-  password: 'K2uOPudSR87sYi0E1U3SIUi92kZ4hhef',
+  user: "gestionguantes_user",
+  host: "dpg-d1639j24d50c73f0vig0-a.oregon-postgres.render.com",
+  database: "gestionguantes",
+  password: "K2uOPudSR87sYi0E1U3SIUi92kZ4hhef",
   port: 5432,
   ssl: { rejectUnauthorized: false }
 });
 
-// ================== RUTAS API ADMIN ==================
+// ================== RUTA PARA INDEX ==================
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+// ================== RUTAS API ==================
 
 app.post("/crear-taller", async (req, res) => {
   try {
@@ -82,34 +93,19 @@ app.get("/api/referencias", async (req, res) => {
 
 app.get("/api/docenas", async (req, res) => {
   try {
-    const { taller, referencia, proceso } = req.query;
-    let query = 'SELECT * FROM docenas';
-    const params = [];
-
-    if (taller) {
-      query += ' WHERE taller_actual_id IN (SELECT id FROM talleres WHERE nombre = $1)';
-      params.push(taller);
-    } else if (referencia) {
-      query += ' WHERE referencia_id IN (SELECT id FROM referencias WHERE nombre = $1)';
-      params.push(referencia);
-    } else if (proceso) {
-      query += ' WHERE estado_actual = $1';
-      params.push(proceso);
-    }
-
-    const result = await pool.query(query, params);
+    const result = await pool.query("SELECT id FROM docenas ORDER BY id DESC");
     res.json(result.rows);
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error al cargar docenas");
+    res.status(500).send("Error cargando docenas");
   }
 });
 
-// ================== ARRANQUE SERVIDOR ==================
+// ================== INICIAR SERVIDOR ==================
 
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`);
+  console.log(`💻 Servidor corriendo en puerto ${PORT}`);
 });
+
 
 
