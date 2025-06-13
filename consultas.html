@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Consulta - Gestión de Guantes</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      display: flex;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+    .sidebar {
+      width: 250px;
+      background-color: #2c3e50;
+      padding-top: 20px;
+      color: white;
+    }
+    .sidebar a {
+      color: white;
+      padding: 10px 20px;
+      display: block;
+      text-decoration: none;
+    }
+    .sidebar a:hover {
+      background-color: #1abc9c;
+    }
+    .main-content {
+      flex-grow: 1;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h4 class="text-center">Consultas</h4>
+    <a href="#" onclick="mostrarConsulta('taller')">Por Taller</a>
+    <a href="#" onclick="mostrarConsulta('referencia')">Por Referencia</a>
+    <a href="#" onclick="mostrarConsulta('proceso')">Por Proceso</a>
+  </div>
+
+  <div class="main-content">
+    <div class="header">
+      <h3>Gestión de Guantes - Consulta</h3>
+      <button class="btn btn-outline-secondary" onclick="window.history.back()">Atrás</button>
+    </div>
+
+    <div id="consulta-taller" style="display:none">
+      <h4>Consulta por Taller</h4>
+      <select id="selectTaller" class="form-select mb-3"></select>
+      <button class="btn btn-primary" onclick="consultarPorTaller()">Consultar</button>
+      <div id="resultadoTaller" class="mt-3"></div>
+    </div>
+
+    <div id="consulta-referencia" style="display:none">
+      <h4>Consulta por Referencia</h4>
+      <select id="selectReferencia" class="form-select mb-3"></select>
+      <button class="btn btn-primary" onclick="consultarPorReferencia()">Consultar</button>
+      <div id="resultadoReferencia" class="mt-3"></div>
+    </div>
+
+    <div id="consulta-proceso" style="display:none">
+      <h4>Consulta por Proceso</h4>
+      <select id="selectProceso" class="form-select mb-3">
+        <option value="troquelado">Troquelado</option>
+        <option value="armado">Armado</option>
+        <option value="cerrado">Cerrado</option>
+        <option value="volteado">Volteado</option>
+      </select>
+      <button class="btn btn-primary" onclick="consultarPorProceso()">Consultar</button>
+      <div id="resultadoProceso" class="mt-3"></div>
+    </div>
+  </div>
+<script src="consultas.js"></script>
+</body>
+</html>
+
+
