@@ -1,39 +1,29 @@
 document.addEventListener("DOMContentLoaded", () => {
   cargarOpciones();
-
-  document.getElementById("filtro-taller").addEventListener("change", async (e) => {
-    const taller = e.target.value;
-    if (taller) {
-      const datos = await fetchDatos(`/api/docenas?taller=${encodeURIComponent(taller)}`);
-      mostrarResultados(datos);
-    }
-  });
-
-  document.getElementById("filtro-referencia").addEventListener("change", async (e) => {
-    const referencia = e.target.value;
-    if (referencia) {
-      const datos = await fetchDatos(`/api/docenas?referencia=${encodeURIComponent(referencia)}`);
-      mostrarResultados(datos);
-    }
-  });
-
-  document.getElementById("filtro-proceso").addEventListener("change", async (e) => {
-    const proceso = e.target.value;
-    if (proceso) {
-      const datos = await fetchDatos(`/api/docenas?proceso=${encodeURIComponent(proceso)}`);
-      mostrarResultados(datos);
-    }
-  });
 });
+
+// Muestra solo el contenedor seleccionado
+function mostrarConsulta(tipo) {
+  document.getElementById("consulta-taller").style.display = "none";
+  document.getElementById("consulta-referencia").style.display = "none";
+  document.getElementById("consulta-proceso").style.display = "none";
+
+  if (tipo === "taller") {
+    document.getElementById("consulta-taller").style.display = "block";
+  } else if (tipo === "referencia") {
+    document.getElementById("consulta-referencia").style.display = "block";
+  } else if (tipo === "proceso") {
+    document.getElementById("consulta-proceso").style.display = "block";
+  }
+}
 
 async function cargarOpciones() {
   try {
     const talleres = await fetchDatos("/api/talleres");
     const referencias = await fetchDatos("/api/referencias");
 
-    const selectTaller = document.getElementById("filtro-taller");
-    const selectReferencia = document.getElementById("filtro-referencia");
-    const selectProceso = document.getElementById("filtro-proceso");
+    const selectTaller = document.getElementById("selectTaller");
+    const selectReferencia = document.getElementById("selectReferencia");
 
     talleres.forEach(t => {
       const opt = document.createElement("option");
@@ -47,14 +37,6 @@ async function cargarOpciones() {
       opt.value = r.nombre;
       opt.textContent = r.nombre;
       selectReferencia.appendChild(opt);
-    });
-
-    const procesos = ["troquelado", "armado", "cerrado", "volteado"];
-    procesos.forEach(p => {
-      const opt = document.createElement("option");
-      opt.value = p;
-      opt.textContent = p.charAt(0).toUpperCase() + p.slice(1);
-      selectProceso.appendChild(opt);
     });
 
   } catch (error) {
@@ -73,9 +55,9 @@ async function fetchDatos(url) {
   }
 }
 
-function mostrarResultados(datos) {
-  const contenedor = document.getElementById("resultado");
-  contenedor.innerHTML = ""; // limpia
+function mostrarResultados(datos, contenedorId) {
+  const contenedor = document.getElementById(contenedorId);
+  contenedor.innerHTML = "";
 
   if (datos.length === 0) {
     contenedor.textContent = "No se encontraron resultados.";
@@ -85,7 +67,6 @@ function mostrarResultados(datos) {
   const tabla = document.createElement("table");
   tabla.className = "table table-bordered";
 
-  // Encabezado
   const thead = tabla.createTHead();
   const encabezado = thead.insertRow();
   Object.keys(datos[0]).forEach(key => {
@@ -94,7 +75,6 @@ function mostrarResultados(datos) {
     encabezado.appendChild(th);
   });
 
-  // Cuerpo
   const tbody = tabla.createTBody();
   datos.forEach(row => {
     const tr = tbody.insertRow();
@@ -106,4 +86,29 @@ function mostrarResultados(datos) {
 
   contenedor.appendChild(tabla);
 }
+
+async function consultarPorTaller() {
+  const taller = document.getElementById("selectTaller").value;
+  if (taller) {
+    const datos = await fetchDatos(`/api/docenas?taller=${encodeURIComponent(taller)}`);
+    mostrarResultados(datos, "resultadoTaller");
+  }
+}
+
+async function consultarPorReferencia() {
+  const referencia = document.getElementById("selectReferencia").value;
+  if (referencia) {
+    const datos = await fetchDatos(`/api/docenas?referencia=${encodeURIComponent(referencia)}`);
+    mostrarResultados(datos, "resultadoReferencia");
+  }
+}
+
+async function consultarPorProceso() {
+  const proceso = document.getElementById("selectProceso").value;
+  if (proceso) {
+    const datos = await fetchDatos(`/api/docenas?proceso=${encodeURIComponent(proceso)}`);
+    mostrarResultados(datos, "resultadoProceso");
+  }
+}
+
 
