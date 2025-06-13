@@ -32,3 +32,11 @@ app.get('/api/docenas', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en puerto ${PORT}`);
 });
+app.use(express.urlencoded({ extended: true }));
+
+app.post('/crear-referencia', async (req, res) => {
+  const { nombre, descripcion } = req.body;
+  await db.query('INSERT INTO referencias (nombre, descripcion) VALUES ($1, $2)', [nombre, descripcion]);
+  res.send('Referencia creada exitosamente.');
+});
+
