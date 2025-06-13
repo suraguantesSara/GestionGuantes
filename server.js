@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public")); // <-- Asegúrate que index.html esté en la carpeta /public
+app.use(express.static(__dirname)); // Usa la raíz del proyecto
 
 // Conexión a PostgreSQL
 const pool = new Pool({
@@ -24,7 +24,7 @@ const pool = new Pool({
 
 // ================== RUTA PARA INDEX ==================
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname, "index.html")); // No usa carpeta
 });
 
 // ================== RUTAS API ==================
@@ -106,6 +106,5 @@ app.get("/api/docenas", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`💻 Servidor corriendo en puerto ${PORT}`);
 });
-
 
 
