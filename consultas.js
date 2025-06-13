@@ -106,3 +106,4 @@ function mostrarResultados(datos) {
 
   contenedor.appendChild(tabla);
 }
+
