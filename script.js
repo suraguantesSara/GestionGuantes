@@ -14,5 +14,5 @@ function validarAcceso() {
 }
 
 function verInventario() {
-    window.location.href = "inventario.html"; // Redirige a la vista de inventario
+    window.location.href = "consultas.html"; // Redirige a la vista de inventario
 }
