@@ -1,50 +1,169 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin - Gestión de Guantes</title>
-  <link rel="stylesheet" href="admin.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestión Guantes - Panel Admin</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+    }
+    .sidebar {
+      width: 250px;
+      background-color: #2c3e50;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+    .sidebar h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+    .sidebar button {
+      background: none;
+      border: none;
+      color: white;
+      text-align: left;
+      padding: 10px 0;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .main {
+      flex: 1;
+      padding: 20px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .form-container {
+      display: none;
+    }
+    .form-container.active {
+      display: block;
+    }
+    label, select, input, textarea {
+      display: block;
+      margin: 10px 0;
+    }
+    button.submit {
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Panel de Administración</h1>
+  <div class="sidebar">
+    <h2>Menú</h2>
+    <button onclick="showForm('taller')">Registrar Taller</button>
+    <button onclick="showForm('referencia')">Registrar Referencia</button>
+    <button onclick="showForm('docenas')">Registrar Docenas Troqueladas</button>
+    <button onclick="showForm('movimiento')">Registrar Movimiento</button>
+  </div>
 
-  <h2>Crear nueva Referencia</h2>
-  <form action="/crear-referencia" method="POST">
-    Nombre: <input type="text" name="nombre" required><br>
-    Descripción: <input type="text" name="descripcion"><br>
-    <button type="submit">Crear Referencia</button>
-  </form>
+  <div class="main">
+    <div class="header">
+      <h1>Gestión de Guantes</h1>
+      <button onclick="location.reload()">Atrás</button>
+    </div>
 
-  <h2>Registrar nuevo Taller</h2>
-  <form action="/crear-taller" method="POST">
-    Nombre: <input type="text" name="nombre" required><br>
-    Área: 
-    <select name="area">
-      <option value="armado">Armado</option>
-      <option value="cerrado">Cerrado</option>
-      <option value="volteado">Volteado</option>
-    </select><br>
-    <button type="submit">Crear Taller</button>
-  </form>
+    <div id="form-taller" class="form-container">
+      <h2>Registrar Taller</h2>
+      <form id="taller-form">
+        <label>Nombre:</label>
+        <input name="nombre" required />
+        <label>Proceso:</label>
+        <select name="proceso" required>
+          <option value="troquelado">Troquelado</option>
+          <option value="armado">Armado</option>
+          <option value="cerrado">Cerrado</option>
+          <option value="volteado">Volteado</option>
+        </select>
+        <button class="submit" type="submit">Guardar</button>
+      </form>
+    </div>
 
-  <h2>Agregar Docena Troquelada</h2>
-  <form action="/crear-docena" method="POST">
-    ID Referencia: <input type="number" name="referencia_id" required><br>
-    ID Taller Armado: <input type="number" name="taller_id" required><br>
-    <button type="submit">Registrar Docena</button>
-  </form>
+    <div id="form-referencia" class="form-container">
+      <h2>Registrar Referencia</h2>
+      <form id="referencia-form">
+        <label>Referencia:</label>
+        <input name="referencia" required />
+        <label>Nombre:</label>
+        <input name="nombre" required />
+        <button class="submit" type="submit">Guardar</button>
+      </form>
+    </div>
 
-  <h2>Registrar Movimiento</h2>
-  <form action="/registrar-movimiento" method="POST">
-    ID Docena: <input type="number" name="docena_id" required><br>
-    Proceso Origen: <input type="text" name="origen"><br>
-    Proceso Destino: <input type="text" name="destino"><br>
-    ID Taller Origen: <input type="number" name="taller_origen"><br>
-    ID Taller Destino: <input type="number" name="taller_destino"><br>
-    Observaciones: <input type="text" name="observaciones"><br>
-    <button type="submit">Registrar Movimiento</button>
-  </form>
+    <div id="form-docenas" class="form-container">
+      <h2>Registrar Docenas Troqueladas</h2>
+      <form id="docenas-form">
+        <label>Referencia:</label>
+        <select name="referencia" id="referencias-select"></select>
+        <label>Cantidad Troquelada:</label>
+        <input name="cantidad" type="number" required />
+        <button class="submit" type="submit">Guardar</button>
+      </form>
+    </div>
+
+    <div id="form-movimiento" class="form-container">
+      <h2>Registrar Movimiento</h2>
+      <form id="movimiento-form">
+        <label>Proceso de Origen:</label>
+        <select name="origen" id="origen-proceso" onchange="actualizarDestinoYtalleres()">
+          <option value="troquelado">Troquelado</option>
+          <option value="armado">Armado</option>
+          <option value="cerrado">Cerrado</option>
+          <option value="volteado">Volteado</option>
+        </select>
+        <label>Proceso Destino:</label>
+        <input name="destino" id="destino-proceso" readonly />
+        <label>Taller Destino:</label>
+        <select name="taller" id="taller-destino"></select>
+        <label>Observaciones (opcional):</label>
+        <textarea name="observaciones"></textarea>
+        <button class="submit" type="submit">Guardar</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const forms = document.querySelectorAll('.form-container');
+    function showForm(id) {
+      forms.forEach(form => form.classList.remove('active'));
+      document.getElementById(`form-${id}`).classList.add('active');
+    }
+
+    function actualizarDestinoYtalleres() {
+      const origen = document.getElementById('origen-proceso').value;
+      const destinoInput = document.getElementById('destino-proceso');
+      const tallerSelect = document.getElementById('taller-destino');
+
+      const flujo = {
+        troquelado: 'armado',
+        armado: 'cerrado',
+        cerrado: 'volteado',
+        volteado: 'stock final'
+      };
+
+      const destino = flujo[origen] || '';
+      destinoInput.value = destino;
+
+      // Cargar talleres por proceso (esto requiere backend para funcionar real)
+      // Aquí solo simulamos
+      const talleres = {
+        armado: ['Taller A1', 'Taller A2'],
+        cerrado: ['Taller C1'],
+        volteado: ['Taller V1'],
+        'stock final': ['Almacén']
+      };
+
+      tallerSelect.innerHTML = (talleres[destino] || []).map(t => `<option value="${t}">${t}</option>`).join('');
+    }
+  </script>
 </body>
 </html>
-
-
